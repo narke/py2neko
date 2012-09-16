@@ -1,0 +1,12 @@
+var int = $new(null);
+
+int.value = 0;
+
+int.add = function() { 
+	int.value = int.value + this.value;
+}
+ 
+var o = $new(null);
+o.value = 1;
+$objsetproto(o,int);
+o.add(2); 

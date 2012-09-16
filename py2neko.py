@@ -221,40 +221,45 @@ class Py2Neko(ast.NodeVisitor):
 		self.current_object_name = repr(node.n)
 
 	def visit_BinOp(self, node):
-		print("BinOp :", node.left, node.right)
+		print("BinOp :")
 		
 		def get_node_value(node):
 			if isinstance(node, ast.Num):
-				val = node.n
+				return node.n
 			elif isinstance(node, ast.Dict):
 				print("Not implemented!")
-				val = None
+				return None
 			elif isinstance(node, ast.List):
 				print("Not implemented!")
-				val = None
+				return None
 			elif isinstance(node, ast.Name):
 				print("Not implemented!")
-				val = None
+				return None
 			elif isinstance(node, ast.Set):
 				print("Not implemented!")
-				val = None
+				return None
 			elif isinstance(node, ast.Str):
 				print("Not implemented!")
-				val = None
+				return None
 			elif isinstance(node, ast.Tuple):
 				print("Not implemented!")
-				val = None
-			
-			return val
+				return None
+				
+		def get_node_op_name(node):
+			if isinstance(node, ast.Add):
+				return "__add__"
 		
-		if isinstance(node.op, ast.Add):
-			if isinstance(node.left, ast.BinOp):
-				# The left node is itself a binary operation
-				ast.NodeVisitor.visit(self, node.left)
-			else:
-				left_node_value = get_node_value(node.left)
-				right_node_value = get_node_value(node.right)
-				self.write_code("%s.__add__(%s)" % (left_node_value, right_node_value))
+		if isinstance(node.left, ast.BinOp):
+			self.write_code("LEFT_NODE.__%s__(%s)" % (get_node_op_name(node.op), get_node_value(node.right)))
+			# The left node is itself a binary operation
+			ast.NodeVisitor.visit(self, node.left)
+		else:
+			left_node_value = get_node_value(node.left)
+			right_node_value = get_node_value(node.right)
+			# TODO: create left node object
+			if isinstance(node.op, ast.Add):
+			    self.write_code("%s.__add__(%s)" % (left_node_value, right_node_value))
+		
 
 	def visit_Str(self, node):
 		print("Str :", node.s)
