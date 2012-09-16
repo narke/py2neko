@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 The MIT License
 
-Copyright (c) 2011 Konstantin Tcholokachvili
+Copyright (c) 2011-2012 Konstantin Tcholokachvili
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -39,8 +39,8 @@ TODO:
 import ast
 from _ast import *
 import sys
-#TODO
-sys.argv.append("test_suit/binop.py")
+
+
 COMPARISON_SYMBOLS = {
     Lt:".__lt__(",
     Gt:".__gt__(",
