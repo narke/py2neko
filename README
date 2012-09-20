@@ -1,13 +1,22 @@
-Python for NekoVM.
+This will be a trans-compiler which converts Python to neko in order
+to run Python on NekoVM.
 
-The code is yet incomplete.
+Python3 is needed!
 
-Interesting URLs:
+
++ Usage:
+
+ narke@bt:~$./py2neko.py <python file>
+ 
+ 
++ Code status:
+ 
+ The translation logic is yet incomplete.
+
+
+
+Interesting URLs about Python AST:
 http://svn.python.org/projects/python/trunk/Lib/lib2to3/
 http://codemonkeytips.blogspot.com/2010/08/simple-python-nodevisitor-example.html
 http://eli.thegreenplace.net/2009/11/28/python-internals-working-with-python-asts/
 http://dev.pocoo.org/hg/sandbox/file/98ce1ce17c7c/ast/codegen.py
-
-
-This code will be probably trashed, instead I may join PyPy to make
-a Python to Neko translator. 

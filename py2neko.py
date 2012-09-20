@@ -272,6 +272,11 @@ class Py2Neko(ast.NodeVisitor):
 
 	def visit_Assign(self, node):
 		print("Assign :", node.value)
+		var = ast.NodeVisitor.generic_visit(self, node.targets[0])
+		if isinstance(node.targets[0], ast.Name):
+		    print("Var", var)	
+		
+		print("XXX")	 
 		self.do_create_var = True
 		if 'n' in dir(node.value):
 			self.current_object_type = "int"
