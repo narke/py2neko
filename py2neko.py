@@ -131,71 +131,29 @@ BUILTIN_FUNCTIONS = {
     "__import__()":"NOT_IMPLEMENTED"
 }
 
-nb_tmp_var = 0
-tmp_vars_list = []
-
-def get_tmp_var_name():
-	global nb_tmp_var
-	global tmp_vars_list
-
-	nb_tmp_var = nb_tmp_var + 1
-	tmp_var_name = "tmp" + str(nb_tmp_var)
-	tmp_vars_list.append(tmp_var_name)
-
-	return tmp_var_name
 
 
-def helper_create_object(var_type, var_name):
-
-	allowed_types = ("int", "str", "list", "dict")
-
-	if var_type not in allowed_types:
-		return None
-
-	ret_str = "var %s = $new(null)\n" % var_name
-	ret_str = ret_str + "$objsetproto(%s, %s)\n" % (var_name, var_type)
-	return ret_str
-
-def helper_create_tmp_var(var_type, val):
-	var_name = get_tmp_var_name()
-	return var_name, helper_create_object(var_type, var_name)
-
-
-def helper_store(var_type, var_name):
-
-	ret_str = None
-	if var_type == "str":
-		ret_str = "%s = " % var_name
-	elif var_type == "int":
-		ret_str = "%s.numerator = " % var_name
-	return ret_str
 
 class Py2Neko(ast.NodeVisitor):
+	
+	binary_op = {
+        'Add'    : '+',
+        'Sub'    : '-',
+        'Mult'   : '*',
+        'Div'    : '/',
+        'Mod'    : '%',
+        'LShift' : '<<',
+        'RShift' : '>>',
+        'BitOr'  : '|',
+        'BitXor' : '^',
+        'BitAnd' : '&',
+    }
 
 	def __init__(self):
 		self.code = []
-		self.in_for_loop = False
-		self.no_named_list = False
 
-		self.current_object_name = ""
-		self.current_object_type = ""
-		self.objects = {}
-		self.in_comparators = False
-		self.in_func_def = False
-		self.do_create_var = True
-		self.in_call = False
-		self.method_call = False
-		self.display_val = False
 		self.values_in_binop = []
-
-	def dump_flags(self):
-		print("in_for_loop = %s" % self.in_for_loop)
-		print("in_comparators = %s" % self.in_comparators)
-		print("in_func_def = %s" % self.in_func_def)
-		print("do_create_var = %s" % self.do_create_var)
-		print("in_call = %s" % self.in_call)
-		print("method_call = %s" % self.method_call)
-		print("display_val = %s" % self.display_val)
+		
 
 	def write_code(self, elem):
 
@@ -205,6 +163,11 @@ class Py2Neko(ast.NodeVisitor):
 
 	def get_code(self):
 		return self.code
+		
+	def get_binary_op(self, node):
+		return self.binary_op[node.op.__class__.__name__]
+		
+		
 
 	def generic_visit(self, node):
 		print(type(node).__name__)
@@ -212,79 +175,35 @@ class Py2Neko(ast.NodeVisitor):
 
 	def visit_Num(self, node):
 		print('Num :', repr(node.n))
-		if self.in_comparators:
-			# value for comparison and the end parenthesis
-			self.write_code("%s)" % repr(node.n))
-		elif self.do_create_var or self.in_call:
-			self.write_code("%s;" % repr(node.n))
-
-		self.current_object_name = repr(node.n)
+		return node.n
 
 	def visit_BinOp(self, node):
-		print("BinOp :")
+		print("BinOp :")	
 		
-		def get_node_value(node):
-			if isinstance(node, ast.Num):
-				return node.n
-			elif isinstance(node, ast.Dict):
-				print("Not implemented!")
-				return None
-			elif isinstance(node, ast.List):
-				print("Not implemented!")
-				return None
-			elif isinstance(node, ast.Name):
-				print("Not implemented!")
-				return None
-			elif isinstance(node, ast.Set):
-				print("Not implemented!")
-				return None
-			elif isinstance(node, ast.Str):
-				print("Not implemented!")
-				return None
-			elif isinstance(node, ast.Tuple):
-				print("Not implemented!")
-				return None
-				
-		def get_node_op_name(node):
-			if isinstance(node, ast.Add):
-				return "__add__"
+		left = self.visit(node.left)
+		right = self.visit(node.right)
 		
-		if isinstance(node.left, ast.BinOp):
-			self.write_code("LEFT_NODE.__%s__(%s)" % (get_node_op_name(node.op), get_node_value(node.right)))
-			# The left node is itself a binary operation
-			ast.NodeVisitor.visit(self, node.left)
-		else:
-			left_node_value = get_node_value(node.left)
-			right_node_value = get_node_value(node.right)
-			# TODO: create left node object
-			if isinstance(node.op, ast.Add):
-			    self.write_code("%s.__add__(%s)" % (left_node_value, right_node_value))
+		return "(%s) %s (%s)" % (left, self.get_binary_op(node), right)
 		
 
 	def visit_Str(self, node):
 		print("Str :", node.s)
 
-		if self.display_val:
-			self.write_code('"' + node.s + '"')
 		# for dict
-		self.current_object_name = repr(node.s)
+		repr(node.s)
 		ast.NodeVisitor.generic_visit(self, node)
 
 	def visit_Assign(self, node):
-		print("Assign :", node.value)
-		var = ast.NodeVisitor.generic_visit(self, node.targets[0])
-		if isinstance(node.targets[0], ast.Name):
-		    print("Var", var)	
+		value = self.visit(node.value)
 		
-		print("XXX")	 
-		self.do_create_var = True
-		if 'n' in dir(node.value):
-			self.current_object_type = "int"
-		elif 's' in dir(node.value):
-			self.current_object_type = "str"
-
+		if isinstance(node.targets[0], (ast.Tuple, ast.List)):
+			self.write_code("var %s = %s;" % ("id", value))
+		else:
+			var = self.visit(node.targets[0])
+			if isinstance(node.targets[0], ast.Name):
+				self.write_code("var %s = %s;" % (var, value))
+		    
 		ast.NodeVisitor.generic_visit(self, node)
-		self.do_create_var = False
 
 	def visit_Expr(self, node):
 		print("Expr :")
@@ -296,62 +215,7 @@ class Py2Neko(ast.NodeVisitor):
 
 	def visit_Name(self, node):
 		print("Name :", node.id)
-
-		self.current_object_name = node.id
-
-		if self.in_call:
-			try:
-				if node.id in BUILTIN_FUNCTIONS.keys():
-					if node.id == "print":
-						#self.method_call = True
-						print("XXX-FUNC: %s" % BUILTIN_FUNCTIONS[node.id])
-						self.write_code("%s" % BUILTIN_FUNCTIONS[node.id])
-					else:
-						# method's call go here
-						print("YYY-FUNC: %s." % BUILTIN_FUNCTIONS[node.id])
-						self.write_code("%s." % BUILTIN_FUNCTIONS[node.id])
-			except KeyError:
-				pass
-
-		# Create an object
-		# The name shoudn't be a built-in functions names
-		elif node.id not in BUILTIN_FUNCTIONS.keys():
-			print("DBG:",self.current_object_name)
-			# Avoid name conflict by excluding duplicated names
-			if self.current_object_name not in self.objects.keys():
-				print("DBG2:",self.current_object_name, self.current_object_type)
-				var_declare = helper_create_object(self.current_object_type, self.current_object_name)
-				if var_declare != None:
-					self.write_code("%s" % var_declare)
-					# keep track of this variable
-					# CAUTION: type isn't always known
-					self.objects[self.current_object_name] = self.current_object_type
-					print("DECLARED_OBJECTS", self.objects)
-		elif (self.display_val and not self.in_cmp) or self.do_create_var:
-			self.write_code("%s" % node.id)
-		elif self.display_val and self.in_cmp:
-			self.write_code("%s" % node.id)
-		# function's parameter
-		elif self.in_call:
-			print("AZERTY")
-			self.write_code(node.id)
-		elif node.id in self.objects.keys():
-			if self.method_call:
-				self.write_code(node.id + ".")
-			elif self.in_call:
-				self.write_code(node.id)
-
-		#self.dump_flags()
-
-		if self.no_named_list:
-			self.write_code("nonamedlist")
-		elif node.id == "True":
-			self.write_code("true")
-		elif node.id == "False":
-			self.write_code("false")
-
-		self.method_call = False
-		ast.NodeVisitor.generic_visit(self, node)
+		return node.id
 
 	def visit_Add(self, node):
 		print("Add :")
@@ -383,36 +247,27 @@ class Py2Neko(ast.NodeVisitor):
 
 	def visit_Store(self, node):
 		print("Store :")
-		result = helper_store(self.current_object_type, self.current_object_name)
 
-		self.write_code(result)
 		ast.NodeVisitor.generic_visit(self, node)
 
 	def visit_List(self, node):
 		print("List :")
 		# Is the list empty?
 		if len(node.elts) == 0:
-			s = helper_create_object("list", self.current_object_name)
-			self.write_code(s)
+			pass
 		# Does it contains items?
 		else:
-			self.do_create_var = False
-			list_declaration = helper_create_object("list", self.current_object_name)
-			self.write_code(list_declaration)
 			self.write_code("$array(")
 			for i, item in enumerate(node.elts):
 				if i:
 					self.write_code(",")
 				ast.NodeVisitor.visit(self, item)
 			self.write_code(")")
-			self.do_create_var = True
 
 	def visit_FunctionDef(self, node):
 		print("FunctionDef")
-		self.in_func_def = True
 		self.write_code("%s = function" % node.name)
 		self.signature(node.args)
-		self.in_func_def = False
 		self.write_code("{")
 		self.body(node.body)
 		self.write_code("}")
@@ -432,7 +287,6 @@ class Py2Neko(ast.NodeVisitor):
 			# No
 			self.write_code("()")
 		else:
-			self.in_call = True
 			self.write_code("(")
 			for arg, default in zip(node.args, padding + node.defaults):
 				write_comma()
@@ -441,7 +295,6 @@ class Py2Neko(ast.NodeVisitor):
 					self.write_code('=')
 					self.visit(default)
 			self.write_code(")")
-			self.in_call = False
 		if node.vararg is not None:
 			write_comma()
 			self.write_code('*' + node.vararg)
@@ -478,28 +331,21 @@ class Py2Neko(ast.NodeVisitor):
 
 	def visit_Call(self, node):
 		print("Call:")
-		self.in_call = True
 
 		self.visit(node.func)
 		self.write_code("(")
 
 		nb_args = len(node.args)
-		self.do_create_var = False
 		for i, arg in enumerate(node.args):
 			self.visit(arg)
 			if i < nb_args - 1:
 				self.write_code(",")
 
-		self.do_create_var = True
-
 		self.write_code(")")
-		self.in_call = False
 
 	def visit_Attribute(self, node):
-		self.method_call = True
 		self.visit(node.value)
 		self.write_code(node.attr)
-		self.method_call = False
 
 	def visit_If(self, node):
 		self.write_code("if (")
@@ -525,19 +371,10 @@ class Py2Neko(ast.NodeVisitor):
 
 
 	def visit_Compare(self, node):
-		self.in_cmp = True
-		self.display_val = True
 		self.visit(node.left)
-		self.in_comparators = True
-		self.do_create_var = False
-		self.display_val = True
 		for op, right in zip(node.ops, node.comparators):
 			self.write_code(' %s ' % COMPARISON_SYMBOLS[type(op)])
 			self.visit(right)
-		self.in_cmp = False
-		self.in_comparators = False
-		self.do_create_var = True
-		self.display_val = False
 
 	def visit_BoolOp(self, node):
 		for i, value in enumerate(node.values):
@@ -551,23 +388,20 @@ class Py2Neko(ast.NodeVisitor):
 
 	def visit_For(self, node):
 		if not hasattr(node.iter, "id"):
-			self.no_named_list = True
+			pass
 		self.visit(node.target)
-		self.in_for_loop = True
 		self.visit(node.iter)
-		var_declare = helper_create_object("int", node.target.id)
+		var_declare = node.target.id
 		self.write_code("%s" % var_declare)
 		self.write_code("%s.numerator = 0;" % node.target.id)
 		if hasattr(node.iter, "id"):
 			self.write_code('while ( %s.__lt__(%s.__len__()) )' % (node.target.id, node.iter.id))
 		else:
 			self.write_code('while ( %s.__lt__(%s.__len__()) )' % (node.target.id, "nonamedlist"))
-			self.no_named_list = False
 		self.write_code('{')
 		self.body_or_else(node)
 		self.write_code('%s = %s.__add__(1)' % (node.target.id, node.target.id))
 		self.write_code('}')
-		self.in_for_loop = False
 
 	def body_or_else(self, node):
 		self.body(node.body)
@@ -585,12 +419,10 @@ class Py2Neko(ast.NodeVisitor):
 		self.write_code("}")
 
 	def visit_Break(self, node):
-		if not self.in_for_loop:
-			self.write_code("break")
+		self.write_code("break")
 
 	def visit_Continue(self, node):
-		if not self.in_for_loop:
-			self.write_code("continue")
+		self.write_code("continue")
 
 	def visit_Delete(self, node):
 		# Neko seems to not have an equivalent
@@ -611,27 +443,20 @@ class Py2Neko(ast.NodeVisitor):
 			self.write_code(")\n")
 
 	def visit_Dict(self, node):
-		self.do_create_var  = False
-		self.display_val = False
-		dict_name = self.current_object_name
-		var_declare = helper_create_object("dict", dict_name)
-		self.write_code("%s" % var_declare)
+		self.write_code("%s" % "xxxdico")
 		for (key, value) in zip(node.keys, node.values):
 			self.visit(key)
-			k = self.current_object_name
+			k = "kkk"
 			self.visit(value)
-			v = self.current_object_name
+			v = "vvv"
 			self.write_code("%s.__setitem__(%s, %s)\n" % (dict_name, k, v))
-		self.do_create_var  = True
-		self.display_val = True
+
 
 	def visit_Subscript(self, node):
-		self.do_create_var  = False
 		self.visit(node.value)
 		self.write_code('%s.__getitem__(' % self.current_object_name)
 		self.visit(node.slice)
 		self.write_code(')')
-		self.do_create_var  = True
 
 
 
