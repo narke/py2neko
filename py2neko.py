@@ -41,112 +41,106 @@ from _ast import *
 import sys
 
 
-COMPARISON_SYMBOLS = {
-    Lt:".__lt__(",
-    Gt:".__gt__(",
-    Eq:".__eq__(",
-    LtE:".__le__(",
-    GtE:".__ge__(",
-    NotEq:".__ne__(",
-    NotIn:"NOT_IMPLEMENTED",
-    In:"NOT_IMPLEMENTED",
-    Is:"NOT_IMPLEMENTED",
-    IsNot:"NOT_IMPLEMENTED"
-}
-
-BOOLEAN_OP_SYMBOLS = {
-    And:"&&",
-    Or:"||"
-}
-
-builtin_functions = {
-    "abs":"NOT_IMPLEMENTED",
-    "all":"NOT_IMPLEMENTED",
-    "any":"NOT_IMPLEMENTED",
-    "ascii":"NOT_IMPLEMENTED",
-    "basestring":"NOT_IMPLEMENTED",
-    "bin":"NOT_IMPLEMENTED",
-    "bool":"NOT_IMPLEMENTED",
-    "bytearray":"NOT_IMPLEMENTED",
-    "bytes":"NOT_IMPLEMENTED",
-    "callable":"NOT_IMPLEMENTED",
-    "chr":"NOT_IMPLEMENTED",
-    "classmethod":"NOT_IMPLEMENTED",
-    "compile":"NOT_IMPLEMENTED",
-    "complex":"NOT_IMPLEMENTED",
-    "delattr":"NOT_IMPLEMENTED",
-    "dict":"NOT_IMPLEMENTED",
-    "dir":"__dir__",
-    "divmod":"NOT_IMPLEMENTED",
-    "enumerate":"NOT_IMPLEMENTED",
-    "eval":"NOT_IMPLEMENTED",
-    "exec":"NOT_IMPLEMENTED",
-    "filter":"NOT_IMPLEMENTED",
-    "float":"NOT_IMPLEMENTED",
-    "format":"NOT_IMPLEMENTED",
-    "frozenset":"NOT_IMPLEMENTED",
-    "getattr":"NOT_IMPLEMENTED",
-    "globals":"NOT_IMPLEMENTED",
-    "hasattr":"NOT_IMPLEMENTED",
-    "hash":"NOT_IMPLEMENTED",
-    "help":"NOT_IMPLEMENTED",
-    "hex":"NOT_IMPLEMENTED",
-    "id":"NOT_IMPLEMENTED",
-    "input":"NOT_IMPLEMENTED",
-    "int":"NOT_IMPLEMENTED",
-    "isinstance":"NOT_IMPLEMENTED",
-    "issubclass":"NOT_IMPLEMENTED",
-    "iter":"NOT_IMPLEMENTED",
-    "len":"__len__",
-    "list":"NOT_IMPLEMENTED",
-    "locals":"NOT_IMPLEMENTED",
-    "map":"NOT_IMPLEMENTED",
-    "max":"NOT_IMPLEMENTED",
-    "memoryview":"NOT_IMPLEMENTED",
-    "min":"NOT_IMPLEMENTED",
-    "next":"NOT_IMPLEMENTED",
-    "object":"NOT_IMPLEMENTED",
-    "oct":"NOT_IMPLEMENTED",
-    "open":"NOT_IMPLEMENTED",
-    "ord":"NOT_IMPLEMENTED",
-    "pow":"NOT_IMPLEMENTED",
-    "print":"$print",
-    "property":"NOT_IMPLEMENTED",
-    "range":"NOT_IMPLEMENTED",
-    "repr":"NOT_IMPLEMENTED",
-    "reversed":"NOT_IMPLEMENTED",
-    "round":"NOT_IMPLEMENTED",
-    "set":"NOT_IMPLEMENTED",
-    "setattr":"NOT_IMPLEMENTED",
-    "slice":"NOT_IMPLEMENTED",
-    "sorted":"NOT_IMPLEMENTED",
-    "staticmethod":"NOT_IMPLEMENTED",
-    "str":"NOT_IMPLEMENTED",
-    "sum":"NOT_IMPLEMENTED",
-    "super":"NOT_IMPLEMENTED",
-    "tuple":"NOT_IMPLEMENTED",
-    "type":"NOT_IMPLEMENTED",
-    "vars":"NOT_IMPLEMENTED",
-    "zip":"NOT_IMPLEMENTED",
-    "__import__()":"NOT_IMPLEMENTED"
-}
-
-
-
-
 class Py2Neko(ast.NodeVisitor):
 	
-	binary_op = {
-        'Add'    : '+',
-        'Sub'    : '-',
-        'Mult'   : '*',
-        'Div'    : '/',
-        'Mod'    : '%',
-        'LShift' : '<<',
-        'RShift' : '>>',
-        'BitOr'  : '|',
-        'BitXor' : '^',
-        'BitAnd' : '&',
+	COMPARISON_SYMBOLS = {
+	    Lt:"<",
+	    Gt:">",
+	    Eq:"==",
+	    LtE:"<=",
+	    GtE:">=",
+	    NotEq:"!",
+	    NotIn:"NOT_IMPLEMENTED",
+	    In:"NOT_IMPLEMENTED",
+	    Is:"NOT_IMPLEMENTED",
+	    IsNot:"NOT_IMPLEMENTED"}
+	
+	BOOLEAN_OP_SYMBOLS = {
+	    And:"&&",
+	    Or:"||"}
+	        
+	BUILTIN_FUNCTIONS = {
+	    "abs":"NOT_IMPLEMENTED",
+	    "all":"NOT_IMPLEMENTED",
+	    "any":"NOT_IMPLEMENTED",
+	    "ascii":"NOT_IMPLEMENTED",
+	    "basestring":"NOT_IMPLEMENTED",
+	    "bin":"NOT_IMPLEMENTED",
+	    "bool":"NOT_IMPLEMENTED",
+	    "bytearray":"NOT_IMPLEMENTED",
+	    "bytes":"NOT_IMPLEMENTED",
+	    "callable":"NOT_IMPLEMENTED",
+	    "chr":"NOT_IMPLEMENTED",
+	    "classmethod":"NOT_IMPLEMENTED",
+	    "compile":"NOT_IMPLEMENTED",
+	    "complex":"NOT_IMPLEMENTED",
+	    "delattr":"NOT_IMPLEMENTED",
+	    "dict":"NOT_IMPLEMENTED",
+	    "dir":"__dir__",
+	    "divmod":"NOT_IMPLEMENTED",
+	    "enumerate":"NOT_IMPLEMENTED",
+	    "eval":"NOT_IMPLEMENTED",
+	    "exec":"NOT_IMPLEMENTED",
+	    "filter":"NOT_IMPLEMENTED",
+	    "float":"NOT_IMPLEMENTED",
+	    "format":"NOT_IMPLEMENTED",
+	    "frozenset":"NOT_IMPLEMENTED",
+	    "getattr":"NOT_IMPLEMENTED",
+	    "globals":"NOT_IMPLEMENTED",
+	    "hasattr":"NOT_IMPLEMENTED",
+	    "hash":"NOT_IMPLEMENTED",
+	    "help":"NOT_IMPLEMENTED",
+	    "hex":"NOT_IMPLEMENTED",
+	    "id":"NOT_IMPLEMENTED",
+	    "input":"NOT_IMPLEMENTED",
+	    "int":"NOT_IMPLEMENTED",
+	    "isinstance":"NOT_IMPLEMENTED",
+	    "issubclass":"NOT_IMPLEMENTED",
+	    "iter":"NOT_IMPLEMENTED",
+	    "len":"__len__",
+	    "list":"NOT_IMPLEMENTED",
+	    "locals":"NOT_IMPLEMENTED",
+	    "map":"NOT_IMPLEMENTED",
+	    "max":"NOT_IMPLEMENTED",
+	    "memoryview":"NOT_IMPLEMENTED",
+	    "min":"NOT_IMPLEMENTED",
+	    "next":"NOT_IMPLEMENTED",
+	    "object":"NOT_IMPLEMENTED",
+	    "oct":"NOT_IMPLEMENTED",
+	    "open":"NOT_IMPLEMENTED",
+	    "ord":"NOT_IMPLEMENTED",
+	    "pow":"NOT_IMPLEMENTED",
+	    "print":"$print",
+	    "property":"NOT_IMPLEMENTED",
+	    "range":"NOT_IMPLEMENTED",
+	    "repr":"NOT_IMPLEMENTED",
+	    "reversed":"NOT_IMPLEMENTED",
+	    "round":"NOT_IMPLEMENTED",
+	    "set":"NOT_IMPLEMENTED",
+	    "setattr":"NOT_IMPLEMENTED",
+	    "slice":"NOT_IMPLEMENTED",
+	    "sorted":"NOT_IMPLEMENTED",
+	    "staticmethod":"NOT_IMPLEMENTED",
+	    "str":"NOT_IMPLEMENTED",
+	    "sum":"NOT_IMPLEMENTED",
+	    "super":"NOT_IMPLEMENTED",
+	    "tuple":"NOT_IMPLEMENTED",
+	    "type":"NOT_IMPLEMENTED",
+	    "vars":"NOT_IMPLEMENTED",
+	    "zip":"NOT_IMPLEMENTED",
+	    "__import__()":"NOT_IMPLEMENTED"}
+	
+	BINARY_OP = {
+	    'Add'    : '+',
+	    'Sub'    : '-',
+	    'Mult'   : '*',
+	    'Div'    : '/',
+	    'Mod'    : '%',
+	    'LShift' : '<<',
+	    'RShift' : '>>',
+	    'BitOr'  : '|',
+	    'BitXor' : '^',
+	    'BitAnd' : '&',
     }
 
 	def __init__(self):
@@ -165,7 +159,7 @@ class Py2Neko(ast.NodeVisitor):
 		return self.code
 		
 	def get_binary_op(self, node):
-		return self.binary_op[node.op.__class__.__name__]
+		return self.BINARY_OP[node.op.__class__.__name__]
 		
 		
 
@@ -333,9 +327,12 @@ class Py2Neko(ast.NodeVisitor):
 	def visit_Call(self, node):
 
 		function_name = self.visit(node.func)
-		if function_name in builtin_functions.keys():
-			function_name = builtin_functions[function_name]
+		
+		if function_name in self.BUILTIN_FUNCTIONS.keys():
+			function_name = self.BUILTIN_FUNCTIONS[function_name]
+			
 		print("Called func:", function_name)
+		
 		if node.keywords:
 			return "Call func keywords: Not implemented!"
 		else:
@@ -376,20 +373,17 @@ class Py2Neko(ast.NodeVisitor):
 
 
 	def visit_Compare(self, node):
-		self.visit(node.left)
 		for op, right in zip(node.ops, node.comparators):
-			self.write_code(' %s ' % COMPARISON_SYMBOLS[type(op)])
-			self.visit(right)
-
+			self.write_code("%s %s %s" % (self.visit(node.left), self.COMPARISON_SYMBOLS[type(op)], self.visit(right)))
+	
 	def visit_BoolOp(self, node):
 		for i, value in enumerate(node.values):
 			if i:
-				self.write_code(' %s ' % BOOLEAN_OP_SYMBOLS[type(node.op)])
+				self.write_code(' %s ' % self.BOOLEAN_OP_SYMBOLS[type(node.op)])
 			self.visit(value)
 
 	def visit_Return(self, node):
-		self.write_code("return")
-		self.visit(node.value)
+		self.write_code("return %s" % (self.visit(node.value)))
 
 	def visit_For(self, node):
 		if not hasattr(node.iter, "id"):
