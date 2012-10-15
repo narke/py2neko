@@ -59,7 +59,7 @@ BOOLEAN_OP_SYMBOLS = {
     Or:"||"
 }
 
-BUILTIN_FUNCTIONS = {
+builtin_functions = {
     "abs":"NOT_IMPLEMENTED",
     "all":"NOT_IMPLEMENTED",
     "any":"NOT_IMPLEMENTED",
@@ -207,7 +207,8 @@ class Py2Neko(ast.NodeVisitor):
 
 	def visit_Expr(self, node):
 		print("Expr :")
-		ast.NodeVisitor.generic_visit(self, node)
+		self.write_code(self.visit(node.value) + ";")
+		#ast.NodeVisitor.generic_visit(self, node)
 
 	def visit_Pass(self, node):
 		print("Pass :")
@@ -330,18 +331,22 @@ class Py2Neko(ast.NodeVisitor):
 		print("Param :")
 
 	def visit_Call(self, node):
-		print("Call:")
 
-		self.visit(node.func)
-		self.write_code("(")
-
-		nb_args = len(node.args)
-		for i, arg in enumerate(node.args):
-			self.visit(arg)
-			if i < nb_args - 1:
-				self.write_code(",")
-
-		self.write_code(")")
+		function_name = self.visit(node.func)
+		if function_name in builtin_functions.keys():
+			function_name = builtin_functions[function_name]
+		print("Called func:", function_name)
+		if node.keywords:
+			return "Call func keywords: Not implemented!"
+		else:
+			if node.starargs:
+				pass
+			elif node.kwargs:
+				pass
+			
+			function_args = ",".join([ str(self.visit(arg)) for arg in node.args ])
+			return "%s(%s)" % (function_name, function_args)
+			
 
 	def visit_Attribute(self, node):
 		self.visit(node.value)
