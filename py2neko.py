@@ -26,14 +26,11 @@ THE SOFTWARE.
 
 """
 CREDITS:
-Parts of signature() and body() are courtesy of codegen.py
-copyright: Copyright 2008 by Armin Ronacher.
-license: BSD
-
-TODO:
-- Generate uniq internal names for no named variables
-- Remove the junk code "var1 = var2" generated for for loops
-- Make tuple immutable
+1. Parts of signature() and body() are courtesy of codegen.py
+	copyright: Copyright 2008 by Armin Ronacher.
+	license: BSD
+	
+2. py2js for inspiration
 """
 
 import ast
@@ -140,8 +137,7 @@ class Py2Neko(ast.NodeVisitor):
 	    'RShift' : '>>',
 	    'BitOr'  : '|',
 	    'BitXor' : '^',
-	    'BitAnd' : '&',
-    }
+	    'BitAnd' : '&'}
 
 	def __init__(self):
 		self.code = []
