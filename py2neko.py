@@ -249,7 +249,7 @@ class Py2Neko(ast.NodeVisitor):
 		print("List :")
 		# Is the list empty?
 		if len(node.elts) == 0:
-			return "$array( );"
+			return "$make(0);"
 		# Does it contains items?
 		else:
 			list_elms = ", ".join([str(self.visit(elm)) for elm in node.elts])
