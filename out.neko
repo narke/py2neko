@@ -1,0 +1,9 @@
+var nums = $array( );;
+append None(1);
+append None(2);
+i = nums;
+__array_index__ = 0;
+while ( __array_index__ < $asize(i) ) { $print(i);
+__array_index__ = __array_index__ + 1;
+}
+

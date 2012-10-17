@@ -245,15 +245,11 @@ class Py2Neko(ast.NodeVisitor):
 		print("List :")
 		# Is the list empty?
 		if len(node.elts) == 0:
-			pass
+			return "$array( );"
 		# Does it contains items?
 		else:
-			self.write_code("$array(")
-			for i, item in enumerate(node.elts):
-				if i:
-					self.write_code(",")
-				ast.NodeVisitor.visit(self, item)
-			self.write_code(")")
+			list_elms = ", ".join([str(self.visit(elm)) for elm in node.elts])
+			return "$array( %s );" % (list_elms)
 
 	def visit_FunctionDef(self, node):
 		print("FunctionDef")
@@ -382,20 +378,17 @@ class Py2Neko(ast.NodeVisitor):
 		self.write_code("return %s" % (self.visit(node.value)))
 
 	def visit_For(self, node):
-		if not hasattr(node.iter, "id"):
-			pass
-		self.visit(node.target)
-		self.visit(node.iter)
-		var_declare = node.target.id
-		self.write_code("%s" % var_declare)
-		self.write_code("%s.numerator = 0;" % node.target.id)
+		for_target = self.visit(node.target)
+		for_iter = self.visit(node.iter)
+		self.write_code("%s = %s;" % (for_target, for_iter))
+		self.write_code("__array_index__ = 0;")
 		if hasattr(node.iter, "id"):
-			self.write_code('while ( %s.__lt__(%s.__len__()) )' % (node.target.id, node.iter.id))
+			self.write_code('while ( __array_index__ < $asize(%s) )' % (for_target))
 		else:
-			self.write_code('while ( %s.__lt__(%s.__len__()) )' % (node.target.id, "nonamedlist"))
+			self.write_code('while ( __array_index__ < $asize(%s) )' % (for_target))
 		self.write_code('{')
 		self.body_or_else(node)
-		self.write_code('%s = %s.__add__(1)' % (node.target.id, node.target.id))
+		self.write_code('__array_index__ = __array_index__ + 1;')
 		self.write_code('}')
 
 	def body_or_else(self, node):
