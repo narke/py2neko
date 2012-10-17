@@ -63,7 +63,7 @@ class Py2Neko(ast.NodeVisitor):
 	    "ascii":"NOT_IMPLEMENTED",
 	    "basestring":"NOT_IMPLEMENTED",
 	    "bin":"NOT_IMPLEMENTED",
-	    "bool":"NOT_IMPLEMENTED",
+	    "bool":"bool",
 	    "bytearray":"NOT_IMPLEMENTED",
 	    "bytes":"NOT_IMPLEMENTED",
 	    "callable":"NOT_IMPLEMENTED",
@@ -90,7 +90,7 @@ class Py2Neko(ast.NodeVisitor):
 	    "hex":"NOT_IMPLEMENTED",
 	    "id":"NOT_IMPLEMENTED",
 	    "input":"NOT_IMPLEMENTED",
-	    "int":"NOT_IMPLEMENTED",
+	    "int":"int",
 	    "isinstance":"NOT_IMPLEMENTED",
 	    "issubclass":"NOT_IMPLEMENTED",
 	    "iter":"NOT_IMPLEMENTED",
@@ -177,10 +177,8 @@ class Py2Neko(ast.NodeVisitor):
 
 	def visit_Str(self, node):
 		print("Str :", node.s)
-
-		# for dict
-		repr(node.s)
-		ast.NodeVisitor.generic_visit(self, node)
+		
+		return repr(node.s)
 
 	def visit_Assign(self, node):
 		value = self.visit(node.value)
@@ -197,7 +195,6 @@ class Py2Neko(ast.NodeVisitor):
 	def visit_Expr(self, node):
 		print("Expr :")
 		self.write_code(self.visit(node.value) + ";")
-		#ast.NodeVisitor.generic_visit(self, node)
 
 	def visit_Pass(self, node):
 		print("Pass :")
@@ -209,7 +206,7 @@ class Py2Neko(ast.NodeVisitor):
 			if "builtins" not in self.imported_modules:
 				self.imported_modules.append("builtins")
 				self.write_code('var builtins = $loader.loadmodule("builtins",$loader);')
-				return "builtins." + node.id
+			return "builtins." + node.id
 		return node.id
 
 	def visit_Add(self, node):

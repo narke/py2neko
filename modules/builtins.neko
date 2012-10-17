@@ -8,7 +8,36 @@ var abs = function(n)
 	return n;
 }
 
+var bool = function(n) 
+{
+	if (n != 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+var int = function(n) 
+{
+	if ($typeof(n) == $tint 
+		|| $typeof(n) == $tfloat 
+		|| $typeof(n) == $tbool
+		|| $typeof(n) == $tstring)
+	{
+		try
+			return $int(n)
+		catch e 
+		{
+			$print(e);
+		}
+	}
+}
 
 
 
-$exports.abs = abs;
+$exports.abs  = abs;
+$exports.bool = bool;
+$exports.int  = int;

@@ -1,1 +1,5 @@
 abs(-30)
+bool(1)
+bool(0)
+int(5.1)
+int("5")
