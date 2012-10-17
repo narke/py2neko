@@ -79,7 +79,7 @@ class Py2Neko(ast.NodeVisitor):
 	    "eval":"NOT_IMPLEMENTED",
 	    "exec":"NOT_IMPLEMENTED",
 	    "filter":"NOT_IMPLEMENTED",
-	    "float":"NOT_IMPLEMENTED",
+	    "float":"float",
 	    "format":"NOT_IMPLEMENTED",
 	    "frozenset":"NOT_IMPLEMENTED",
 	    "getattr":"NOT_IMPLEMENTED",
@@ -202,6 +202,9 @@ class Py2Neko(ast.NodeVisitor):
 
 	def visit_Name(self, node):
 		print("Name :", node.id)
+		if node.id in ["True", "False"]:
+			return  node.id.lower()
+			
 		if node.id in self.BUILTIN_FUNCTIONS.keys():
 			if "builtins" not in self.imported_modules:
 				self.imported_modules.append("builtins")

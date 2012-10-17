@@ -37,7 +37,25 @@ var int = function(n)
 }
 
 
+var float = function(n) 
+{
+	if ($typeof(n) == $tint 
+		|| $typeof(n) == $tfloat 
+		|| $typeof(n) == $tbool
+		|| $typeof(n) == $tstring)
+	{
+		try
+			return $float(n)
+		catch e 
+		{
+			$print(e);
+		}
+	}
+}
 
-$exports.abs  = abs;
-$exports.bool = bool;
-$exports.int  = int;
+
+
+$exports.abs   = abs;
+$exports.bool  = bool;
+$exports.int   = int;
+$exports.float = float;
