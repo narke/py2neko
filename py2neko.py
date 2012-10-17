@@ -57,7 +57,7 @@ class Py2Neko(ast.NodeVisitor):
 	    Or:"||"}
 	        
 	BUILTIN_FUNCTIONS = {
-	    "abs":"NOT_IMPLEMENTED",
+	    "abs":"abs",
 	    "all":"NOT_IMPLEMENTED",
 	    "any":"NOT_IMPLEMENTED",
 	    "ascii":"NOT_IMPLEMENTED",
@@ -141,8 +141,7 @@ class Py2Neko(ast.NodeVisitor):
 
 	def __init__(self):
 		self.code = []
-
-		self.values_in_binop = []
+		self.imported_modules = []
 		
 
 	def write_code(self, elem):
@@ -206,6 +205,11 @@ class Py2Neko(ast.NodeVisitor):
 
 	def visit_Name(self, node):
 		print("Name :", node.id)
+		if node.id in self.BUILTIN_FUNCTIONS.keys():
+			if "builtins" not in self.imported_modules:
+				self.imported_modules.append("builtins")
+				self.write_code('var builtins = $loader.loadmodule("builtins",$loader);')
+				return "builtins." + node.id
 		return node.id
 
 	def visit_Add(self, node):
