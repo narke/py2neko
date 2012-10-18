@@ -8,6 +8,7 @@ var abs = function(n)
 	return n;
 }
 
+
 var bool = function(n) 
 {
 	if (n != 0)
@@ -19,6 +20,7 @@ var bool = function(n)
 		return false;
 	}
 }
+
 
 var int = function(n) 
 {
@@ -54,8 +56,35 @@ var float = function(n)
 }
 
 
+var max = function(a, b)
+{
+	if (a >= b)
+	{
+		return a;
+	}
+	else
+	{
+		return b;
+	}
+}
+
+
+var min = function(a, b)
+{
+	if (a <= b)
+	{
+		return a;
+	}
+	else
+	{
+		return b;
+	}
+}
+
 
 $exports.abs   = abs;
 $exports.bool  = bool;
 $exports.int   = int;
 $exports.float = float;
+$exports.max   = max;
+$exports.min   = min;
