@@ -126,11 +126,26 @@ var pow = function(x, y, z)
     }
 }
 
-$exports.abs    = abs;
-$exports.bool   = bool;
-$exports.int    = int;
-$exports.float  = float;
-$exports.max    = max;
-$exports.min    = min;
-$exports.divmod = divmod;
-$exports.pow    = pow;
+
+var callable = function(object)
+{
+    if (object == $tfunction)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+
+$exports.abs      = abs;
+$exports.bool     = bool;
+$exports.int      = int;
+$exports.float    = float;
+$exports.max      = max;
+$exports.min      = min;
+$exports.divmod   = divmod;
+$exports.pow      = pow;
+$exports.callable = callable;

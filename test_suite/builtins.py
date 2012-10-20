@@ -10,3 +10,8 @@ max(-50, 80)
 min(-50, 80)
 divmod(8,4)
 pow(2,4)
+
+def func():
+	pass
+
+callable(func)

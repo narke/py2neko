@@ -42,7 +42,7 @@ class Py2Neko(ast.NodeVisitor):
 	    "bool"        : "bool",
 	    "bytearray"   : "NOT_IMPLEMENTED",
 	    "bytes"       : "NOT_IMPLEMENTED",
-	    "callable"    : "NOT_IMPLEMENTED",
+	    "callable"    : "callable",
 	    "chr"         : "NOT_IMPLEMENTED",
 	    "classmethod" : "NOT_IMPLEMENTED",
 	    "compile"     : "NOT_IMPLEMENTED",
