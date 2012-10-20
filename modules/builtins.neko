@@ -98,6 +98,34 @@ var divmod = function(x, y)
     }
 }
 
+
+var pow = function(x, y, z)
+{
+    if ($typeof(x) != $tint || $typeof(x) != $tfloat
+        || $typeof(y) != $tint || $typeof(y) != $tfloat
+        || $typeof(z) != $tint || $typeof(z) != $tfloat)
+    {
+        throw("TypeError: an integer or float is required ");
+    }
+    
+    var i = 0;
+    var result = x;
+
+    while (i < y-1)
+    {
+        result = result * x;
+    }
+
+    if (z != 0)
+    {
+        return return % z;
+    }
+    else
+    {
+        return result;
+    }
+}
+
 $exports.abs    = abs;
 $exports.bool   = bool;
 $exports.int    = int;
@@ -105,3 +133,4 @@ $exports.float  = float;
 $exports.max    = max;
 $exports.min    = min;
 $exports.divmod = divmod;
+$exports.pow    = pow;

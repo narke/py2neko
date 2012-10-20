@@ -82,7 +82,7 @@ class Py2Neko(ast.NodeVisitor):
 	    "oct"         : "NOT_IMPLEMENTED",
 	    "open"        : "NOT_IMPLEMENTED",
 	    "ord"         : "NOT_IMPLEMENTED",
-	    "pow"         : "NOT_IMPLEMENTED",
+	    "pow"         : "pow",
 	    "print"       : "$print",
 	    "property"    : "NOT_IMPLEMENTED",
 	    "range"       : "NOT_IMPLEMENTED",
