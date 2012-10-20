@@ -82,9 +82,26 @@ var min = function(a, b)
 }
 
 
-$exports.abs   = abs;
-$exports.bool  = bool;
-$exports.int   = int;
-$exports.float = float;
-$exports.max   = max;
-$exports.min   = min;
+var divmod = function(x, y)
+{
+    if ($typeof(x) == $tint && $typeof(y) == $tint)
+    {
+        return $array($idiv(x - x % y, y), x % y);
+    }
+    else if ($typeof(x) == $tfloat || $typeof(y) == $tfloat)
+    {
+        return $array((x - x % y)/y, x % y);
+    }
+    else
+    {
+        throw("TypeError: an integer is required");
+    }
+}
+
+$exports.abs    = abs;
+$exports.bool   = bool;
+$exports.int    = int;
+$exports.float  = float;
+$exports.max    = max;
+$exports.min    = min;
+$exports.divmod = divmod;
