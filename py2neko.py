@@ -17,103 +17,104 @@ import sys
 class Py2Neko(ast.NodeVisitor):
 	
 	COMPARISON_SYMBOLS = {
-	    Lt:"<",
-	    Gt:">",
-	    Eq:"==",
-	    LtE:"<=",
-	    GtE:">=",
-	    NotEq:"!",
-	    NotIn:"NOT_IMPLEMENTED",
-	    In:"NOT_IMPLEMENTED",
-	    Is:"NOT_IMPLEMENTED",
-	    IsNot:"NOT_IMPLEMENTED"}
+	    Lt    : "<",
+	    Gt    : ">",
+	    Eq    : "==",
+	    LtE   : "<=",
+	    GtE   : ">=",
+	    NotEq : "!",
+	    NotIn : "NOT_IMPLEMENTED",
+	    In    : "NOT_IMPLEMENTED",
+	    Is    : "NOT_IMPLEMENTED",
+	    IsNot : "NOT_IMPLEMENTED"}
 	
 	BOOLEAN_OP_SYMBOLS = {
-	    And:"&&",
-	    Or:"||"}
+	    And : "&&",
+	    Or  : "||"}
 	        
 	BUILTIN_FUNCTIONS = {
-	    "abs":"abs",
-	    "all":"NOT_IMPLEMENTED",
-	    "any":"NOT_IMPLEMENTED",
-	    "ascii":"NOT_IMPLEMENTED",
-	    "basestring":"NOT_IMPLEMENTED",
-	    "bin":"NOT_IMPLEMENTED",
-	    "bool":"bool",
-	    "bytearray":"NOT_IMPLEMENTED",
-	    "bytes":"NOT_IMPLEMENTED",
-	    "callable":"NOT_IMPLEMENTED",
-	    "chr":"NOT_IMPLEMENTED",
-	    "classmethod":"NOT_IMPLEMENTED",
-	    "compile":"NOT_IMPLEMENTED",
-	    "complex":"NOT_IMPLEMENTED",
-	    "delattr":"NOT_IMPLEMENTED",
-	    "dict":"NOT_IMPLEMENTED",
-	    "dir":"__dir__",
-	    "divmod":"NOT_IMPLEMENTED",
-	    "enumerate":"NOT_IMPLEMENTED",
-	    "eval":"NOT_IMPLEMENTED",
-	    "exec":"NOT_IMPLEMENTED",
-	    "filter":"NOT_IMPLEMENTED",
-	    "float":"float",
-	    "format":"NOT_IMPLEMENTED",
-	    "frozenset":"NOT_IMPLEMENTED",
-	    "getattr":"NOT_IMPLEMENTED",
-	    "globals":"NOT_IMPLEMENTED",
-	    "hasattr":"NOT_IMPLEMENTED",
-	    "hash":"NOT_IMPLEMENTED",
-	    "help":"NOT_IMPLEMENTED",
-	    "hex":"NOT_IMPLEMENTED",
-	    "id":"NOT_IMPLEMENTED",
-	    "input":"NOT_IMPLEMENTED",
-	    "int":"int",
-	    "isinstance":"NOT_IMPLEMENTED",
-	    "issubclass":"NOT_IMPLEMENTED",
-	    "iter":"NOT_IMPLEMENTED",
-	    "len":"__len__",
-	    "list":"NOT_IMPLEMENTED",
-	    "locals":"NOT_IMPLEMENTED",
-	    "map":"NOT_IMPLEMENTED",
-	    "max":"max",
-	    "memoryview":"NOT_IMPLEMENTED",
-	    "min":"min",
-	    "next":"NOT_IMPLEMENTED",
-	    "object":"NOT_IMPLEMENTED",
-	    "oct":"NOT_IMPLEMENTED",
-	    "open":"NOT_IMPLEMENTED",
-	    "ord":"NOT_IMPLEMENTED",
-	    "pow":"NOT_IMPLEMENTED",
-	    "print":"$print",
-	    "property":"NOT_IMPLEMENTED",
-	    "range":"NOT_IMPLEMENTED",
-	    "repr":"NOT_IMPLEMENTED",
-	    "reversed":"NOT_IMPLEMENTED",
-	    "round":"NOT_IMPLEMENTED",
-	    "set":"NOT_IMPLEMENTED",
-	    "setattr":"NOT_IMPLEMENTED",
-	    "slice":"NOT_IMPLEMENTED",
-	    "sorted":"NOT_IMPLEMENTED",
+	    "abs"         : "abs",
+	    "all"         : "NOT_IMPLEMENTED",
+	    "any"         : "NOT_IMPLEMENTED",
+	    "ascii"       : "NOT_IMPLEMENTED",
+	    "basestring"  : "NOT_IMPLEMENTED",
+	    "bin"         : "NOT_IMPLEMENTED",
+	    "bool"        : "bool",
+	    "bytearray"   : "NOT_IMPLEMENTED",
+	    "bytes"       : "NOT_IMPLEMENTED",
+	    "callable"    : "NOT_IMPLEMENTED",
+	    "chr"         : "NOT_IMPLEMENTED",
+	    "classmethod" : "NOT_IMPLEMENTED",
+	    "compile"     : "NOT_IMPLEMENTED",
+	    "complex"     : "NOT_IMPLEMENTED",
+	    "delattr"     : "NOT_IMPLEMENTED",
+	    "dict"        : "NOT_IMPLEMENTED",
+	    "dir"         : "__dir__",
+	    "divmod"      : "NOT_IMPLEMENTED",
+	    "enumerate"   : "NOT_IMPLEMENTED",
+	    "eval"        : "NOT_IMPLEMENTED",
+	    "exec"        : "NOT_IMPLEMENTED",
+	    "filter"      : "NOT_IMPLEMENTED",
+	    "float"       : "float",
+	    "format"      : "NOT_IMPLEMENTED",
+	    "frozenset"   : "NOT_IMPLEMENTED",
+	    "getattr"     : "NOT_IMPLEMENTED",
+	    "globals"     : "NOT_IMPLEMENTED",
+	    "hasattr"     : "NOT_IMPLEMENTED",
+	    "hash"        : "NOT_IMPLEMENTED",
+	    "help"        : "NOT_IMPLEMENTED",
+	    "hex"         : "NOT_IMPLEMENTED",
+	    "id"          : "NOT_IMPLEMENTED",
+	    "input"       : "NOT_IMPLEMENTED",
+	    "int"         : "int",
+	    "isinstance"  : "NOT_IMPLEMENTED",
+	    "issubclass"  : "NOT_IMPLEMENTED",
+	    "iter"        : "NOT_IMPLEMENTED",
+	    "len"         : "__len__",
+	    "list"        : "NOT_IMPLEMENTED",
+	    "locals"      : "NOT_IMPLEMENTED",
+	    "map"         : "NOT_IMPLEMENTED",
+	    "max"         : "max",
+	    "memoryview"  : "NOT_IMPLEMENTED",
+	    "min"         : "min",
+	    "next"        : "NOT_IMPLEMENTED",
+	    "object"      : "NOT_IMPLEMENTED",
+	    "oct"         : "NOT_IMPLEMENTED",
+	    "open"        : "NOT_IMPLEMENTED",
+	    "ord"         : "NOT_IMPLEMENTED",
+	    "pow"         : "NOT_IMPLEMENTED",
+	    "print"       : "$print",
+	    "property"    : "NOT_IMPLEMENTED",
+	    "range"       : "NOT_IMPLEMENTED",
+	    "repr"        : "NOT_IMPLEMENTED",
+	    "reversed"    : "NOT_IMPLEMENTED",
+	    "round"       : "NOT_IMPLEMENTED",
+	    "set"         : "NOT_IMPLEMENTED",
+	    "setattr"     : "NOT_IMPLEMENTED",
+	    "slice"       : "NOT_IMPLEMENTED",
+	    "sorted"      : "NOT_IMPLEMENTED",
 	    "staticmethod": "NOT_IMPLEMENTED",
-	    "str":"NOT_IMPLEMENTED",
-	    "sum":"NOT_IMPLEMENTED",
-	    "super":"NOT_IMPLEMENTED",
-	    "tuple":"NOT_IMPLEMENTED",
-	    "type":"NOT_IMPLEMENTED",
-	    "vars":"NOT_IMPLEMENTED",
-	    "zip":"NOT_IMPLEMENTED",
-	    "__import__()":"NOT_IMPLEMENTED"}
+	    "str"         : "NOT_IMPLEMENTED",
+	    "sum"         : "NOT_IMPLEMENTED",
+	    "super"       : "NOT_IMPLEMENTED",
+	    "tuple"       : "NOT_IMPLEMENTED",
+	    "type"        : "NOT_IMPLEMENTED",
+	    "vars"        : "NOT_IMPLEMENTED",
+	    "zip"         : "NOT_IMPLEMENTED",
+	    "__import__()": "NOT_IMPLEMENTED"}
 	
 	BINARY_OP = {
-	    'Add'    : '+',
-	    'Sub'    : '-',
-	    'Mult'   : '*',
-	    'Div'    : '/',
-	    'Mod'    : '%',
-	    'LShift' : '<<',
-	    'RShift' : '>>',
-	    'BitOr'  : '|',
-	    'BitXor' : '^',
-	    'BitAnd' : '&'}
+	    'Add'      : '+',
+	    'Sub'      : '-',
+	    'Mult'     : '*',
+	    'Div'      : '/',
+	    'FloorDiv' : '/'
+	    'Mod'      : '%',
+	    'LShift'   : '<<',
+	    'RShift'   : '>>',
+	    'BitOr'    : '|',
+	    'BitXor'   : '^',
+	    'BitAnd'   : '&'}
 
 	def __init__(self):
 		self.code = []
@@ -178,7 +179,7 @@ class Py2Neko(ast.NodeVisitor):
 
 	def visit_Name(self, node):
 		print("Name :", node.id)
-		if node.id in ["True", "False"]:
+		if node.id in ("True", "False"):
 			return  node.id.lower()
 			
 		if node.id in self.BUILTIN_FUNCTIONS.keys():
@@ -188,32 +189,10 @@ class Py2Neko(ast.NodeVisitor):
 			return "builtins." + node.id
 		return node.id
 
-	def visit_Add(self, node):
-		print("Add :")
-		self.write_code(".__add__(")
-
-	def visit_Sub(self, node):
-		print("Sub :")
-		self.write_code(".__sub__(")
-
-	def visit_Mult(self, node):
-		print("Mult :")
-		self.write_code(".__mul__(")
-		ast.NodeVisitor.generic_visit(self, node)
 
 	def visit_Pow(self, node):
 		print("Pow :")
 		self.write_code(".__pow__(")
-		ast.NodeVisitor.generic_visit(self, node)
-
-	def visit_Div(self, node):
-		print("Div :")
-		self.write_code(".__truediv__(")
-		ast.NodeVisitor.generic_visit(self, node)
-
-	def visit_FloorDiv(self, node):
-		print("FloorDiv :")
-		self.write_code(".__floordiv__(")
 		ast.NodeVisitor.generic_visit(self, node)
 
 	def visit_Store(self, node):
@@ -439,7 +418,7 @@ def code2file(code):
 	f = open("out.neko", "w")
 
 	for elem in code:
-		if elem in [')','}'] or elem[len(elem)-1] == ';':
+		if elem in (')','}') or elem[len(elem)-1] == ';':
 			f.write(elem + "\n")
 		else:
 			f.write(str(elem) + " ")
