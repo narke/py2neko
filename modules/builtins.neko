@@ -101,11 +101,11 @@ var divmod = function(x, y)
 
 var pow = function(x, y, z)
 {
-    if ($typeof(x) != $tint || $typeof(x) != $tfloat
-        || $typeof(y) != $tint || $typeof(y) != $tfloat
-        || $typeof(z) != $tint || $typeof(z) != $tfloat)
+    if (($typeof(x) != $tint && $typeof(x) != $tfloat)
+        || ($typeof(y) != $tint && $typeof(y) != $tfloat)
+        || ($typeof(z) != $tint && $typeof(z) != $tfloat))
     {
-        throw("TypeError: an integer or float is required ");
+        throw("TypeError: an integer or float is required");
     }
     
     var i = 0;
@@ -118,7 +118,7 @@ var pow = function(x, y, z)
 
     if (z != 0)
     {
-        return return % z;
+        return result % z;
     }
     else
     {

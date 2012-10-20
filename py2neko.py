@@ -155,7 +155,7 @@ class Py2Neko(ast.NodeVisitor):
 	def visit_Str(self, node):
 		print("Str :", node.s)
 		
-		return repr(node.s)
+		return '"' + node.s + '"'
 
 	def visit_Assign(self, node):
 		value = self.visit(node.value)
