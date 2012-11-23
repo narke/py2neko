@@ -114,6 +114,7 @@ var pow = function(x, y, z)
     while (i < y-1)
     {
         result = result * x;
+        i = i + 1;
     }
 
     if (z != 0)
