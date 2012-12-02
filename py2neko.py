@@ -164,9 +164,12 @@ class Py2Neko(ast.NodeVisitor):
 			self.write_code("var %s = %s;" % ("id", value))
 		else:
 			var = self.visit(node.targets[0])
+			
 			if isinstance(node.targets[0], ast.Name):
-				self.write_code("var %s = %s;" % (var, value))
-		    
+				# setting id values of generated neko code
+				value = value % (var, var)
+				self.write_code("var %s = %s" % (var, value))
+				
 		ast.NodeVisitor.generic_visit(self, node)
 
 	def visit_Expr(self, node):
@@ -179,6 +182,7 @@ class Py2Neko(ast.NodeVisitor):
 
 	def visit_Name(self, node):
 		print("Name :", node.id)
+		
 		if node.id in ("True", "False"):
 			return  node.id.lower()
 			
@@ -204,7 +208,10 @@ class Py2Neko(ast.NodeVisitor):
 		print("List :")
 		# Is the list empty?
 		if len(node.elts) == 0:
-			return "$make(0);"
+			list_declaration = "$new(null);\n"
+			list_declaration = list_declaration + "%s.contents = $amake(0);\n"
+			list_declaration = list_declaration + "$objsetproto(%s,list);\n"
+			return list_declaration
 		# Does it contains items?
 		else:
 			list_elms = ", ".join([str(self.visit(elm)) for elm in node.elts])
@@ -297,8 +304,8 @@ class Py2Neko(ast.NodeVisitor):
 			
 
 	def visit_Attribute(self, node):
-		self.visit(node.value)
-		self.write_code(node.attr)
+		return "%s.%s" % (self.visit(node.value), node.attr)
+		
 
 	def visit_If(self, node):
 		self.write_code("if (")

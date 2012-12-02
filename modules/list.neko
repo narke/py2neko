@@ -1,0 +1,136 @@
+var list = $new(null);
+
+list.__iter__ = function() {
+        //TODO
+        var i = 0;
+
+        while(i <= $asize(this.contents))
+        {
+            //yield this.contents[i];
+        }
+    }
+
+list.__len__ = function() {
+		return $asize(this.contents);
+	}
+
+list.append = function(elem) {
+        var copy_list;
+        var i = 0;
+
+
+        copy_list = $amake($asize(this.contents) + 1);
+
+        while ( i < $asize(this.contents))
+        {
+            copy_list[i] = this.contents[i];
+            i = i + 1;
+        }
+
+        copy_list[i] = elem;
+
+        this.contents = $acopy(copy_list);
+    }
+
+
+list.count = function(elem) {
+        var i = 0;
+        var total = 0;
+
+        while (i < $asize(this.contents))
+        {
+            if (this.contents[i] == elem)
+            {
+                total = total + 1;
+            }
+            i = i + 1;
+        }
+        return total;
+    }
+
+
+list.extend = function() {
+    //TODO
+}
+
+list.index = function(x) {
+        var i = 0;
+
+        while (i < $asize(this.contents))
+        {
+            if (this.contents[i] == x)
+            {
+                return i;
+            }
+            i = i + 1;
+        }
+        return null;
+    }
+
+
+list.insert = function(i, x) {
+        var index = 0;
+        
+        if (i < 0 || i > $asize(this.contents))
+        {
+            return null;
+        }
+        
+        while (index <= $asize(this.contents))
+        {
+            if (i == index)
+            {
+                this.contents[i] = x;
+            }
+            index = index + 1;
+        }
+    }
+
+list.pop = function() {
+        var retval;
+        var tmp_list;
+
+        // check boundaries
+
+        retval = this.contents[$asize(this.contents)-1];
+
+        tmp_list = $asub(this.contents, 0, $asize(this.contents)-1);
+
+        this.contents = tmp_list;
+
+        return retval;
+    }
+
+
+list.remove = function(x) {
+        var tmp_list = $amake($asize(this.contents)-1);
+
+        var i = 0;
+        var j = 0;
+
+        while (i <= $asize(this.contents))
+        {
+            if (this.contents[i] != x)
+            {
+                tmp_list[j] = this.contents[i];
+                j = j + 1;
+            }
+            i = i + 1;
+        }
+        this.contents = tmp_list;
+    }
+
+
+
+
+
+list.reverse = function(list) {
+        //TODO
+    }
+
+
+
+
+list.sort = function() {
+    //TODO
+}
