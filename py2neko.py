@@ -118,14 +118,17 @@ class Py2Neko(ast.NodeVisitor):
 
 	def __init__(self):
 		self.code = []
+		self.imports = []
 		self.imported_modules = []
 		
 
 	def write_code(self, elem):
-
 		if elem != None:
 			print("WROTE:", elem)
 			self.code.append(elem)
+	
+	def write_import(self, module):
+		self.imports.append(module)
 
 	def get_code(self):
 		return self.code
@@ -206,7 +209,7 @@ class Py2Neko(ast.NodeVisitor):
 		if node.id in self.BUILTIN_FUNCTIONS.keys():
 			if "builtins" not in self.imported_modules:
 				self.imported_modules.append("builtins")
-				self.write_code('var builtins = $loader.loadmodule("builtins",$loader);')
+				self.write_import('var builtins = $loader.loadmodule("builtins",$loader);')
 			return "builtins." + node.id
 		return node.id
 
@@ -430,13 +433,16 @@ class Py2Neko(ast.NodeVisitor):
 
 
 # Writes neko code contained in a list into a file
-def code2file(code):
+def code2file(modules, code):
 
 	if len(code) == 0:
 		print("Error: You must call get_code() after visiting the AST")
 		return
 
 	f = open("out.neko", "w")
+	
+	for module in modules:
+		f.write(module + "\n")
 
 	for elem in code:
 		if elem in (')','}') or elem[len(elem)-1] == ';':
@@ -471,4 +477,4 @@ if __name__ == '__main__':
 	v.visit(node)
 
 	generated_code = v.get_code()
-	code2file(generated_code)
+	code2file(v.imports, generated_code)
