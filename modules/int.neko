@@ -1,0 +1,301 @@
+
+var int = $new(null);
+
+int.dbg = function() { $print(this.contents + "\n") }
+
+
+int.__abs__ = function() {
+       //TODO
+	}
+
+int.__add__ = function(n) {
+       return this.numerator + n;
+    }
+
+int.__and__ = function(n) {
+       return this.numerator & n;
+    }
+
+int.__bool__ = function() {
+       //TODO
+    }
+
+int.__ceil__ = function() {
+       //TODO
+    }
+
+
+int.__class__ = function() {
+       //TODO
+    }
+
+int.__delattr__ = function() {
+       //TODO
+    }
+
+int.__divmod__ = function() {
+       //TODO
+    }
+
+int.__doc__ = function() {
+       //TODO
+    }
+
+int.__eq__ = function(n) {
+       if (this.numerator == n)
+       {
+            return true;
+       }
+       else
+       {
+            return false;
+       }
+    }
+
+int.__float__ = function() {
+       //TODO
+    }
+
+int.__floor__ = function() {
+       //TODO
+    }
+
+int.__floordiv__ = function() {
+       //TODO
+    }
+
+int.__format__ = function() {
+       //TODO
+    }
+
+int.__ge__ = function(n) {
+       if (this.numerator >= n)
+       {
+            return true;
+       }
+       else
+       {
+            return false;
+       }
+    }
+
+int.__getattribute__ = function() {
+       //TODO
+    }
+
+int.__getnewargs__ = function() {
+       //TODO
+    }
+
+int.__gt__ = function(n) {
+       if (this.numerator > n)
+       {
+            return true;
+       }
+       else
+       {
+            return false;
+       }
+    }
+
+int.__hash__ = function() {
+       //TODO
+    }
+
+int.__index__ = function() {
+       //TODO
+    }
+
+int.__init__ = function() {
+       //TODO
+    }
+
+int.__int__ = function() {
+       //TODO
+    }
+
+int.__invert__ = function() {
+       //TODO
+    }
+
+int.__le__ = function(n) {
+       if (this.numerator <= n)
+       {
+            return true;
+       }
+       else
+       {
+            return false;
+       }
+    }
+
+int.__lshift__ = function() {
+       //TODO
+    }
+
+int.__lt__ = function(n) {
+       if (this.numerator < n)
+       {
+            return true;
+       }
+       else
+       {
+            return false;
+       }
+    }
+
+int.__mod__ = function(n) {
+       return this.numerator % n;
+    }
+
+int.__mul__ = function(n) {
+       return this.numerator * n;
+    }
+
+int.__ne__ = function(n) {
+       if (this.numerator != n)
+       {
+            return true;
+       }
+       else
+       {
+            return false;
+       }
+    }
+
+int.__neg__ = function() {
+       return 0 - this.numerator;
+    }
+
+int.__new__ = function() {
+       //TODO
+    }
+
+int.__or__ = function(n) {
+       return this.numerator | n;
+    }
+
+int.__pos__ = function() {
+       //TODO
+    }
+
+int.__pow__ = function() {
+       //TODO
+    }
+
+int.__radd__ = function() {
+       //TODO
+    }
+
+int.__rand__ = function() {
+       //TODO
+    }
+
+int.__rdivmod__ = function() {
+       //TODO
+    }
+
+int.__reduce__ = function() {
+       //TODO
+    }
+
+int.__reduce_ex__ = function() {
+       //TODO
+    }
+
+int.__repr__ = function() {
+       //TODO
+    }
+
+int.__rfloordiv__ = function() {
+       //TODO
+    }
+
+int.__rlshift__ = function() {
+       //TODO
+    }
+
+int.__rmod__ = function() {
+       //TODO
+    }
+
+int.__rmul__ = function() {
+       //TODO
+    }
+
+int.__ror__ = function() {
+       //TODO
+    }
+
+int.__round__ = function() {
+       //TODO
+    }
+
+int.__rpow__ = function() {
+       //TODO
+    }
+
+int.__rrshift__ = function() {
+       //TODO
+    }
+
+int.__rshift__ = function() {
+       //TODO
+    }
+
+int.__rsub__ = function() {
+       //TODO
+    }
+
+int.__rtruediv__ = function() {
+       //TODO
+    }
+
+int.__rxor__ = function() {
+       //TODO
+    }
+
+int.__setattr__ = function() {
+       //TODO
+    }
+
+int.__sizeof__ = function() {
+       //TODO
+    }
+
+int.__str__ = function() {
+       //TODO
+    }
+
+int.__sub__ = function() {
+       //TODO
+    }
+
+int.__subclasshook__ = function() {
+       //TODO
+    }
+
+int.__truediv__ = function() {
+       //TODO
+    }
+
+int.__trunc__ = function() {
+       //TODO
+    }
+
+int.__xor__ = function(n) {
+       return this.numerator ^ n;
+    }
+
+int.bit_length = function() {
+       //TODO
+    }
+
+int.conjugate = function() {
+       //TODO
+    }
+
+int.to_bytes_ = function() {
+       //TODO
+    }
+

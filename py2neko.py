@@ -167,11 +167,25 @@ class Py2Neko(ast.NodeVisitor):
 			
 			if isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Call):
 				self.write_code("var %s = %s" % (var, value))
-			elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, (ast.Tuple, ast.List)):
-				# setting id values of generated neko code
-				print(var, value)
-				value = value % (var, var)
-				self.write_code("var %s = %s" % (var, value))
+			elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.List):
+				list_declaration = "$new(null);\n"
+				list_declaration = list_declaration + "%s.contents = $amake(0);\n"
+				list_declaration = list_declaration + "$objsetproto(%s,list);\n"
+				list_declaration = list_declaration % (var, var)
+				self.write_code("var %s = %s" % (var, list_declaration))
+			elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Tuple):
+				pass
+			elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Num):
+				int_declaration =  "$new(null);\n"
+				int_declaration = int_declaration + "%s.numerator"
+				int_declaration = int_declaration + " = %s;\n" % (value)
+				int_declaration = int_declaration + "%s.denominator = 1;\n"
+				int_declaration = int_declaration + "%s.imag = 1;\n"
+				int_declaration = int_declaration + "%s.real = 1;\n"
+				int_declaration = int_declaration + "$objsetproto(%s,int);\n"
+				int_declaration = int_declaration % (var, var, var, var, var)
+				self.write_code("var %s = %s" % (var, int_declaration))
+				
 				
 		ast.NodeVisitor.generic_visit(self, node)
 
@@ -211,14 +225,11 @@ class Py2Neko(ast.NodeVisitor):
 		print("List :")
 		# Is the list empty?
 		if len(node.elts) == 0:
-			list_declaration = "$new(null);\n"
-			list_declaration = list_declaration + "%s.contents = $amake(0);\n"
-			list_declaration = list_declaration + "$objsetproto(%s,list);\n"
-			return list_declaration
+			return
 		# Does it contains items?
 		else:
 			list_elms = ", ".join([str(self.visit(elm)) for elm in node.elts])
-			return "$array( %s );" % (list_elms)
+			return "TODO( %s );" % (list_elms)
 
 	def visit_FunctionDef(self, node):
 		print("FunctionDef")
