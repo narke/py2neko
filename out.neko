@@ -1,0 +1,7 @@
+var l = $new(null);
+l.contents = $amake(0);
+$objsetproto(l,list);
+ l.append(1);
+l.append(2);
+var builtins = $loader.loadmodule("builtins",$loader);
+var l = builtins.list() 

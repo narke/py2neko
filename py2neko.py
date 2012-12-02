@@ -71,7 +71,7 @@ class Py2Neko(ast.NodeVisitor):
 	    "issubclass"  : "NOT_IMPLEMENTED",
 	    "iter"        : "NOT_IMPLEMENTED",
 	    "len"         : "NOT_IMPLEMENTED",
-	    "list"        : "NOT_IMPLEMENTED",
+	    "list"        : "list",
 	    "locals"      : "NOT_IMPLEMENTED",
 	    "map"         : "NOT_IMPLEMENTED",
 	    "max"         : "max",
@@ -165,8 +165,11 @@ class Py2Neko(ast.NodeVisitor):
 		else:
 			var = self.visit(node.targets[0])
 			
-			if isinstance(node.targets[0], ast.Name):
+			if isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Call):
+				self.write_code("var %s = %s" % (var, value))
+			elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, (ast.Tuple, ast.List)):
 				# setting id values of generated neko code
+				print(var, value)
 				value = value % (var, var)
 				self.write_code("var %s = %s" % (var, value))
 				
