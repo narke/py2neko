@@ -155,3 +155,4 @@ $exports.min      = min;
 $exports.divmod   = divmod;
 $exports.pow      = pow;
 $exports.callable = callable;
+$exports.list	  = list;

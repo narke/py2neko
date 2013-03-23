@@ -1,301 +1,360 @@
 
 var int = $new(null);
 
-int.dbg = function() { $print(this.contents + "\n") }
+$exports.__abs__ = function()
+{
+	//TODO
+}
+
+$exports.__add__ = function(n)
+{
+	return this.numerator + n;
+}
+
+$exports.__and__ = function(n)
+{
+	return this.numerator & n;
+}
+
+$exports.__bool__ = function()
+{
+	//TODO
+}
+
+$exports.__ceil__ = function()
+{
+	//TODO
+}
 
 
-int.__abs__ = function() {
-       //TODO
+$exports.__class__ = function()
+{
+	//TODO
+}
+
+$exports.__delattr__ = function()
+{
+	//TODO
+}
+
+$exports.__divmod__ = function()
+{
+	//TODO
+}
+
+$exports.__doc__ = function()
+{
+	//TODO
+}
+
+$exports.__eq__ = function(n)
+{
+	if (this.numerator == n)
+	{
+		return true;
 	}
-
-int.__add__ = function(n) {
-       return this.numerator + n;
-    }
-
-int.__and__ = function(n) {
-       return this.numerator & n;
-    }
-
-int.__bool__ = function() {
-       //TODO
-    }
-
-int.__ceil__ = function() {
-       //TODO
-    }
-
-
-int.__class__ = function() {
-       //TODO
-    }
-
-int.__delattr__ = function() {
-       //TODO
-    }
-
-int.__divmod__ = function() {
-       //TODO
-    }
-
-int.__doc__ = function() {
-       //TODO
-    }
-
-int.__eq__ = function(n) {
-       if (this.numerator == n)
-       {
-            return true;
-       }
-       else
-       {
-            return false;
-       }
-    }
-
-int.__float__ = function() {
-       //TODO
-    }
-
-int.__floor__ = function() {
-       //TODO
-    }
-
-int.__floordiv__ = function() {
-       //TODO
-    }
-
-int.__format__ = function() {
-       //TODO
-    }
-
-int.__ge__ = function(n) {
-       if (this.numerator >= n)
-       {
-            return true;
-       }
-       else
-       {
-            return false;
-       }
-    }
-
-int.__getattribute__ = function() {
-       //TODO
-    }
-
-int.__getnewargs__ = function() {
-       //TODO
-    }
-
-int.__gt__ = function(n) {
-       if (this.numerator > n)
-       {
-            return true;
-       }
-       else
-       {
-            return false;
-       }
-    }
-
-int.__hash__ = function() {
-       //TODO
-    }
-
-int.__index__ = function() {
-       //TODO
-    }
-
-int.__init__ = function() {
-       //TODO
-    }
-
-int.__int__ = function() {
-       //TODO
-    }
-
-int.__invert__ = function() {
-       //TODO
-    }
-
-int.__le__ = function(n) {
-       if (this.numerator <= n)
-       {
-            return true;
-       }
-       else
-       {
-            return false;
-       }
-    }
-
-int.__lshift__ = function() {
-       //TODO
-    }
-
-int.__lt__ = function(n) {
-       if (this.numerator < n)
-       {
-            return true;
-       }
-       else
-       {
-            return false;
-       }
-    }
-
-int.__mod__ = function(n) {
-       return this.numerator % n;
-    }
-
-int.__mul__ = function(n) {
-       return this.numerator * n;
-    }
-
-int.__ne__ = function(n) {
-       if (this.numerator != n)
-       {
-            return true;
-       }
-       else
-       {
-            return false;
-       }
-    }
-
-int.__neg__ = function() {
-       return 0 - this.numerator;
-    }
-
-int.__new__ = function() {
-       //TODO
-    }
-
-int.__or__ = function(n) {
-       return this.numerator | n;
-    }
-
-int.__pos__ = function() {
-       //TODO
-    }
-
-int.__pow__ = function() {
-       //TODO
-    }
-
-int.__radd__ = function() {
-       //TODO
-    }
-
-int.__rand__ = function() {
-       //TODO
-    }
-
-int.__rdivmod__ = function() {
-       //TODO
-    }
-
-int.__reduce__ = function() {
-       //TODO
-    }
-
-int.__reduce_ex__ = function() {
-       //TODO
-    }
-
-int.__repr__ = function() {
-       //TODO
-    }
-
-int.__rfloordiv__ = function() {
-       //TODO
-    }
-
-int.__rlshift__ = function() {
-       //TODO
-    }
-
-int.__rmod__ = function() {
-       //TODO
-    }
-
-int.__rmul__ = function() {
-       //TODO
-    }
-
-int.__ror__ = function() {
-       //TODO
-    }
-
-int.__round__ = function() {
-       //TODO
-    }
-
-int.__rpow__ = function() {
-       //TODO
-    }
-
-int.__rrshift__ = function() {
-       //TODO
-    }
-
-int.__rshift__ = function() {
-       //TODO
-    }
-
-int.__rsub__ = function() {
-       //TODO
-    }
-
-int.__rtruediv__ = function() {
-       //TODO
-    }
-
-int.__rxor__ = function() {
-       //TODO
-    }
-
-int.__setattr__ = function() {
-       //TODO
-    }
-
-int.__sizeof__ = function() {
-       //TODO
-    }
-
-int.__str__ = function() {
-       //TODO
-    }
-
-int.__sub__ = function() {
-       //TODO
-    }
-
-int.__subclasshook__ = function() {
-       //TODO
-    }
-
-int.__truediv__ = function() {
-       //TODO
-    }
-
-int.__trunc__ = function() {
-       //TODO
-    }
-
-int.__xor__ = function(n) {
-       return this.numerator ^ n;
-    }
-
-int.bit_length = function() {
-       //TODO
-    }
-
-int.conjugate = function() {
-       //TODO
-    }
-
-int.to_bytes_ = function() {
-       //TODO
-    }
-
+	else
+	{
+		return false;
+	}
+}
+
+$exports.__float__ = function()
+{
+	//TODO
+}
+
+$exports.__floor__ = function()
+{
+	//TODO
+}
+
+$exports.__floordiv__ = function()
+{
+	//TODO
+}
+
+$exports.__format__ = function()
+{
+	//TODO
+}
+
+$exports.__ge__ = function(n)
+{
+	if (this.numerator >= n)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+$exports.__getattribute__ = function()
+{
+	//TODO
+}
+
+$exports.__getnewargs__ = function()
+{
+	//TODO
+}
+
+$exports.__gt__ = function(n)
+{
+	if (this.numerator > n)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+$exports.__hash__ = function()
+{
+	//TODO
+}
+
+$exports.__index__ = function()
+{
+	//TODO
+}
+
+$exports.__init__ = function()
+{
+	//TODO
+}
+
+$exports.__int__ = function()
+{
+	//TODO
+}
+
+$exports.__invert__ = function()
+{
+	//TODO
+}
+
+$exports.__le__ = function(n)
+{
+	if (this.numerator <= n)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+$exports.__lshift__ = function()
+{
+	//TODO
+}
+
+$exports.__lt__ = function(n)
+{
+	if (this.numerator < n)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+$exports.__mod__ = function(n)
+{
+	return this.numerator % n;
+}
+
+$exports.__mul__ = function(n)
+{
+	return this.numerator * n;
+}
+
+$exports.__ne__ = function(n)
+{
+	if (this.numerator != n)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+$exports.__neg__ = function()
+{
+	return 0 - this.numerator;
+}
+
+$exports.__new__ = function()
+{
+	//TODO
+}
+
+$exports.__or__ = function(n)
+{
+	return this.numerator | n;
+}
+
+$exports.__pos__ = function()
+{
+	//TODO
+}
+
+$exports.__pow__ = function()
+{
+	//TODO
+}
+
+$exports.__radd__ = function()
+{
+	//TODO
+}
+
+$exports.__rand__ = function()
+{
+	//TODO
+}
+
+$exports.__rdivmod__ = function()
+{
+	//TODO
+}
+
+$exports.__reduce__ = function()
+{
+	//TODO
+}
+
+$exports.__reduce_ex__ = function()
+{
+	//TODO
+}
+
+$exports.__repr__ = function()
+{
+	//TODO
+}
+
+$exports.__rfloordiv__ = function()
+{
+	//TODO
+}
+
+$exports.__rlshift__ = function()
+{
+	//TODO
+}
+
+$exports.__rmod__ = function()
+{
+	//TODO
+}
+
+$exports.__rmul__ = function()
+{
+	//TODO
+}
+
+$exports.__ror__ = function()
+{
+	//TODO
+}
+
+$exports.__round__ = function()
+{
+	//TODO
+}
+
+$exports.__rpow__ = function()
+{
+	//TODO
+}
+
+$exports.__rrshift__ = function()
+{
+	//TODO
+}
+
+$exports.__rshift__ = function()
+{
+	//TODO
+}
+
+$exports.__rsub__ = function()
+{
+	//TODO
+}
+
+$exports.__rtruediv__ = function()
+{
+	//TODO
+}
+
+$exports.__rxor__ = function()
+{
+	//TODO
+}
+
+$exports.__setattr__ = function()
+{
+	//TODO
+}
+
+$exports.__sizeof__ = function()
+{
+	//TODO
+}
+
+$exports.__str__ = function()
+{
+	//TODO
+}
+
+$exports.__sub__ = function()
+{
+	//TODO
+}
+
+$exports.__subclasshook__ = function()
+{
+	//TODO
+}
+
+$exports.__truediv__ = function()
+{
+	//TODO
+}
+
+$exports.__trunc__ = function()
+{
+	//TODO
+}
+
+$exports.__xor__ = function(n)
+{
+	return this.numerator ^ n;
+}
+
+$exports.bit_length = function()
+{
+	//TODO
+}
+
+$exports.conjugate = function()
+{
+	//TODO
+}
+
+$exports.to_bytes_ = function()
+{
+	//TODO
+}
