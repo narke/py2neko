@@ -95,7 +95,7 @@ class Py2Neko(ast.NodeVisitor):
         "sorted"      : "NOT_IMPLEMENTED",
         "staticmethod": "NOT_IMPLEMENTED",
         "str"         : "NOT_IMPLEMENTED",
-        "sum"         : "NOT_IMPLEMENTED",
+        "sum"         : "sum",
         "super"       : "NOT_IMPLEMENTED",
         "tuple"       : "NOT_IMPLEMENTED",
         "type"        : "NOT_IMPLEMENTED",
@@ -239,7 +239,8 @@ class Py2Neko(ast.NodeVisitor):
         # Does it contains items?
         else:
             list_elms = ", ".join([str(self.visit(elm)) for elm in node.elts])
-            return "TODO( %s );" % (list_elms)
+            # A list is created by conerting a tuple
+            return "builtins.list($amake( %s ))" % (list_elms)
 
     def visit_FunctionDef(self, node):
         print("FunctionDef")

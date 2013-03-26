@@ -22,6 +22,36 @@ var bool = function(n)
 }
 
 
+var callable = function(object)
+{
+    if (object == $tfunction)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+
+var divmod = function(x, y)
+{
+    if ($typeof(x) == $tint && $typeof(y) == $tint)
+    {
+        return $array($idiv(x - x % y, y), x % y);
+    }
+    else if ($typeof(x) == $tfloat || $typeof(y) == $tfloat)
+    {
+        return $array((x - x % y)/y, x % y);
+    }
+    else
+    {
+        throw("TypeError: an integer is required");
+    }
+}
+
+
 var int = function(n) 
 {
 	if ($typeof(n) == $tint 
@@ -55,9 +85,13 @@ var float = function(n)
 	}
 }
 
-var list = function() 
+var list = function(parameter) 
 {
-	// TODO
+	if ($typeof(parameter) == $tarray)
+	{
+		// This is a tuple
+		return parameter;
+	}
 }
 
 
@@ -84,23 +118,6 @@ var min = function(a, b)
 	{
 		return b;
 	}
-}
-
-
-var divmod = function(x, y)
-{
-    if ($typeof(x) == $tint && $typeof(y) == $tint)
-    {
-        return $array($idiv(x - x % y, y), x % y);
-    }
-    else if ($typeof(x) == $tfloat || $typeof(y) == $tfloat)
-    {
-        return $array((x - x % y)/y, x % y);
-    }
-    else
-    {
-        throw("TypeError: an integer is required");
-    }
 }
 
 
@@ -132,27 +149,32 @@ var pow = function(x, y, z)
     }
 }
 
-
-var callable = function(object)
+var sum = function(list)
 {
-    if (object == $tfunction)
+	var length = $asize(list);
+	var i = 0;
+	var sum = 0;
+	
+	while (i < length)
     {
-        return true;
+		sum = sum + list[i];
     }
-    else
-    {
-        return false;
-    }
+    
+    return sum;
 }
+
+
+
 
 
 $exports.abs      = abs;
 $exports.bool     = bool;
+$exports.callable = callable;
+$exports.divmod   = divmod;
 $exports.int      = int;
 $exports.float    = float;
+$exports.list	  = list;
 $exports.max      = max;
 $exports.min      = min;
-$exports.divmod   = divmod;
 $exports.pow      = pow;
-$exports.callable = callable;
-$exports.list	  = list;
+$exports.sum      = sum;

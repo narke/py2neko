@@ -1,0 +1,21 @@
+var int = $loader.loadmodule("int",$loader);
+
+var bool = $new(null);
+
+$exports.bool = function(n)
+{
+	if (n != 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+$objsetproto(bool,int);
+
+$exports.False = bool(0);
+$exports.True = bool(1);
+
