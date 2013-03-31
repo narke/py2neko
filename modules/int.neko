@@ -1,77 +1,62 @@
+var builtins	= $loader.loadmodule("builtins",$loader);
+var bool 		= $loader.loadmodule("bool",$loader);
+var float 		= $loader.loadmodule("float",$loader);
 
 var int = $new(null);
 
+int.numerator 	= 0;
+int.denominator = 1;
+int.imag = 0;
+int.real = 0;
+
 $exports.__abs__ = function()
 {
-	//TODO
+	return builtins.absthis.numerator)
 }
 
-$exports.__add__ = function(n)
+$exports.__add__ = function(y)
 {
-	return this.numerator + n;
+	return this.numerator + y;
 }
 
-$exports.__and__ = function(n)
+$exports.__and__ = function(y)
 {
 	return this.numerator & n;
 }
 
 $exports.__bool__ = function()
 {
-	//TODO
+	retutn bool.bool(this.numerator)
 }
 
 $exports.__ceil__ = function()
 {
-	//TODO
+	return this.numerator;
 }
 
-
-$exports.__class__ = function()
+$exports.__divmod__ = function(y)
 {
-	//TODO
+	return divmod(this.numerator, y);
 }
 
-$exports.__delattr__ = function()
+$exports.__eq__ = function(y)
 {
-	//TODO
-}
-
-$exports.__divmod__ = function()
-{
-	//TODO
-}
-
-$exports.__doc__ = function()
-{
-	//TODO
-}
-
-$exports.__eq__ = function(n)
-{
-	if (this.numerator == n)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (this.numerator == y);
 }
 
 $exports.__float__ = function()
 {
-	//TODO
+	return float.float(this.numerator);
 }
 
 $exports.__floor__ = function()
 {
-	//TODO
+	return this.numerator;
 }
 
-$exports.__floordiv__ = function()
+$exports.__floordiv__ = function(y)
 {
-	//TODO
+	return ((this.numerator / y) - ((this.numerator / y) % 1));
 }
 
 $exports.__format__ = function()
@@ -79,16 +64,9 @@ $exports.__format__ = function()
 	//TODO
 }
 
-$exports.__ge__ = function(n)
+$exports.__ge__ = function(y)
 {
-	if (this.numerator >= n)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (this.numerator >= y);
 }
 
 $exports.__getattribute__ = function()
@@ -101,21 +79,14 @@ $exports.__getnewargs__ = function()
 	//TODO
 }
 
-$exports.__gt__ = function(n)
+$exports.__gt__ = function(y)
 {
-	if (this.numerator > n)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (this.numerator > y);
 }
 
 $exports.__hash__ = function()
 {
-	//TODO
+	return builtins.hash(this.numerator);
 }
 
 $exports.__index__ = function()
@@ -123,14 +94,9 @@ $exports.__index__ = function()
 	//TODO
 }
 
-$exports.__init__ = function()
-{
-	//TODO
-}
-
 $exports.__int__ = function()
 {
-	//TODO
+	return builtins.int(this.numerator);
 }
 
 $exports.__invert__ = function()
@@ -138,55 +104,34 @@ $exports.__invert__ = function()
 	//TODO
 }
 
-$exports.__le__ = function(n)
+$exports.__le__ = function(y)
 {
-	if (this.numerator <= n)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (this.numerator <= y);
 }
 
 $exports.__lshift__ = function()
 {
-	//TODO
+	return (this.numerator << y);
 }
 
-$exports.__lt__ = function(n)
+$exports.__lt__ = function(y)
 {
-	if (this.numerator < n)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (this.numerator < y);
 }
 
-$exports.__mod__ = function(n)
+$exports.__mod__ = function(y)
 {
-	return this.numerator % n;
+	return this.numerator % y;
 }
 
-$exports.__mul__ = function(n)
+$exports.__mul__ = function(y)
 {
-	return this.numerator * n;
+	return this.numerator * y;
 }
 
-$exports.__ne__ = function(n)
+$exports.__ne__ = function(y)
 {
-	if (this.numerator != n)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (this.numerator != y);
 }
 
 $exports.__neg__ = function()
@@ -194,49 +139,34 @@ $exports.__neg__ = function()
 	return 0 - this.numerator;
 }
 
-$exports.__new__ = function()
+$exports.__or__ = function(y)
 {
-	//TODO
-}
-
-$exports.__or__ = function(n)
-{
-	return this.numerator | n;
+	return this.numerator | y;
 }
 
 $exports.__pos__ = function()
 {
-	//TODO
+	return 0 + this.numerator;
 }
 
-$exports.__pow__ = function()
+$exports.__pow__ = function(y)
 {
-	//TODO
+	return builtins.pow(this.numerator, y);
 }
 
-$exports.__radd__ = function()
+$exports.__radd__ = function(y)
 {
-	//TODO
+	return y + this.numerator;
 }
 
-$exports.__rand__ = function()
+$exports.__rand__ = function(y)
 {
-	//TODO
+	return y & this.numerator;
 }
 
-$exports.__rdivmod__ = function()
+$exports.__rdivmod__ = function(y)
 {
-	//TODO
-}
-
-$exports.__reduce__ = function()
-{
-	//TODO
-}
-
-$exports.__reduce_ex__ = function()
-{
-	//TODO
+	return builtins.divmod(y, this.numerator);
 }
 
 $exports.__repr__ = function()
@@ -244,69 +174,64 @@ $exports.__repr__ = function()
 	//TODO
 }
 
-$exports.__rfloordiv__ = function()
+$exports.__rfloordiv__ = function(y)
 {
-	//TODO
+	return ((y / this.numerator) - ((y / this.numerator) % 1));
 }
 
-$exports.__rlshift__ = function()
+$exports.__rlshift__ = function(y)
 {
-	//TODO
+	return (y << x);
 }
 
-$exports.__rmod__ = function()
+$exports.__rmod__ = function(y)
 {
-	//TODO
+	return (y % x);
 }
 
-$exports.__rmul__ = function()
+$exports.__rmul__ = function(y)
 {
-	//TODO
+	return (y * x);
 }
 
-$exports.__ror__ = function()
+$exports.__ror__ = function(y)
 {
-	//TODO
+	return (y | x);
 }
 
 $exports.__round__ = function()
 {
-	//TODO
+	return this.numerator;
 }
 
-$exports.__rpow__ = function()
+$exports.__rpow__ = function(y)
 {
-	//TODO
+	return builtins.pow(this.numerator, y);
 }
 
-$exports.__rrshift__ = function()
+$exports.__rrshift__ = function(y)
 {
-	//TODO
+	return y >> x;
 }
 
-$exports.__rshift__ = function()
+$exports.__rshift__ = function(y)
 {
-	//TODO
+	return x >> y;
 }
 
-$exports.__rsub__ = function()
+$exports.__rsub__ = function(y)
 {
-	//TODO
+	return y - x;
 }
 
-$exports.__rtruediv__ = function()
+$exports.__rtruediv__ = function(y)
 {
-	//TODO
+	return y / x;
 }
 
-$exports.__rxor__ = function()
+$exports.__rxor__ = function(y)
 {
-	//TODO
-}
-
-$exports.__setattr__ = function()
-{
-	//TODO
+	return y ^ x;
 }
 
 $exports.__sizeof__ = function()
@@ -314,47 +239,37 @@ $exports.__sizeof__ = function()
 	//TODO
 }
 
-$exports.__str__ = function()
+$exports.__str__ = function(y)
 {
-	//TODO
+	return builtins.str(this.numerator);
 }
 
-$exports.__sub__ = function()
+$exports.__sub__ = function(y)
 {
-	//TODO
+	return x - y;
 }
 
-$exports.__subclasshook__ = function()
+$exports.__truediv__ = function(y)
 {
-	//TODO
-}
-
-$exports.__truediv__ = function()
-{
-	//TODO
+	return x / y;
 }
 
 $exports.__trunc__ = function()
 {
-	//TODO
+	return this.numerator;
 }
 
-$exports.__xor__ = function(n)
+$exports.__xor__ = function(y)
 {
-	return this.numerator ^ n;
+	return this.numerator ^ y;
 }
 
 $exports.bit_length = function()
 {
-	//TODO
+	return int.bit_length(this.numerator);
 }
 
 $exports.conjugate = function()
-{
-	//TODO
-}
-
-$exports.to_bytes_ = function()
 {
 	//TODO
 }

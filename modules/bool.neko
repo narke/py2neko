@@ -1,10 +1,15 @@
 var int = $loader.loadmodule("int",$loader);
 
 var bool = $new(null);
+bool.x = 0;
 
-$exports.bool = function(n)
+$objsetproto(bool,int);
+
+$exports.bool = function(x)
 {
-	if (n != 0)
+	this.x = x;
+	
+	if (this.x != 0)
 	{
 		return true;
 	}
@@ -14,8 +19,47 @@ $exports.bool = function(n)
 	}
 }
 
-$objsetproto(bool,int);
+$exports.__and__ = function(y)
+{
+	return this.x & y;
+}
 
+$exports.__or__ = function(y)
+{
+	return this.x | y;
+}
+
+$exports.__rand__ = function(y)
+{
+	return y & this.x;
+}
+
+$exports.__repr__ = function(y)
+{
+	;	// TODO
+}
+
+$exports.__ror__ = function(y)
+{
+	return y | this.x;
+}
+
+$exports.__rxor__ = function(y)
+{
+	return y ^ this.x;
+}
+
+$exports.__str__ = function(y)
+{
+	;	// TODO
+}
+
+$exports.__xor__ = function()
+{
+	return this.x ^ y;
+}
+
+// Built-in constants
 $exports.False = bool(0);
 $exports.True = bool(1);
 
