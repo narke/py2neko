@@ -164,11 +164,6 @@ var sum = function(list)
 }
 
 
-// Built-in constants
-
-
-
-
 $exports.abs      = abs;
 $exports.bool     = bool;
 $exports.callable = callable;
