@@ -2,13 +2,26 @@ var list = $new(null);
 
 $exports.__iter__ = function() 
 {
-	//TODO
-	var i = 0;
-	
-	while(i <= $asize(this.contents))
-	{
-		//yield this.contents[i];
-	}
+    var i = -1;
+
+    var iterator = $new(null);
+    $objsetproto(iterator, list);
+    
+    iterator.__next__ = function()
+    {
+        i = i + 1;
+        
+        if (i >= $asize(this.contents))
+        {
+			// exception
+        }
+        else
+        {
+			return this.contents[i];
+		}
+    }
+
+    return iterator;
 }
 
 $exports.__len__ = function() 
