@@ -1,6 +1,6 @@
 var builtins	= $loader.loadmodule("builtins",$loader);
-var bool 		= $loader.loadmodule("bool",$loader);
-var float 		= $loader.loadmodule("float",$loader);
+var bool		= $loader.loadmodule("bool",$loader);
+var float		= $loader.loadmodule("float",$loader);
 
 var int = $new(null);
 

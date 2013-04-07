@@ -1,0 +1,173 @@
+var tuple = $new(null);
+tuple.contents = $amake(0);
+
+
+$exports.__add__ = function(y)
+{
+    var x_size = $asize(this.contents);
+    var y_size = $asize(y);
+
+    var tuple_size = x_size + y_size;
+    var i = 0;
+
+    tmp_tuple = $amake(tuple_size);
+
+    while ( i < tuple_size)
+    {
+        if (i < x_size)
+        {
+            tmp_tuple[i] = this.contents[i];
+        }
+        else
+        {
+            tmp_tuple[i] = y[i];
+        }
+        i = i + 1;
+    }
+
+    this.contents = tmp_tuple;
+}
+
+$exports.__contains__ = function(y)
+{
+    var x_size = $asize(this.contents);
+    var i = 0;
+
+    while (i < x_size)
+    {
+        if (this.contents[i] == y)
+        {
+            return true;
+        }
+        i = i + 1;
+    }
+
+    return false;
+}
+
+
+$exports.__eq__ = function(y)
+{
+    var x_size = $asize(this.contents);
+    var y_size = $asize(y);
+    var i = 0;
+
+    // tuples of different size aren't equal
+    if (x_size != y_size)
+    {
+        return false;
+    }
+
+    // They have the same length, check their content
+    while (i < x_size)
+    {
+        if (this.contents[i] != y[i])
+        {
+            return false;
+        }
+        i = i + 1;
+    }
+
+    return true;
+}
+
+$exports.__ge__ = function()
+{
+	// TODO
+}
+
+
+$exports.__getitem__ = function(y)
+{
+    return this.contents[y];
+}
+
+
+$exports.__gt__ = function()
+{
+	// TODO
+}
+
+
+$exports.__iter__ = function()
+{
+    var i = -1;
+
+    var iterator = $new(null);
+    $objsetproto(iterator, tuple);
+
+    iterator.__next__ = function()
+    {
+        i = i + 1;
+        return this.contents[i];
+    }
+
+    return iterator;
+}
+
+
+$exports.__le__ = function()
+{
+	// TODO
+}
+
+
+$exports.__len__ = function()
+{
+    return $asize(this.contents);
+}
+
+
+$exports.__lt__ = function()
+{
+	// TODO
+}
+
+
+$exports.__mul__ = function()
+{
+	// TODO
+}
+
+
+$exports.__ne__ = function()
+{
+	// TODO
+}
+
+
+$exports.count = function(y)
+{
+    var x_size = $asize(this.contents);
+    var i = 0;
+    var occurences = 0;
+
+    while (i < x_size)
+    {
+        if (this.contents[i] == y)
+        {
+            occurences = occurences + 1;
+        }
+        i = i + 1;
+    }
+
+    return occurences;
+}
+
+
+$exports.index = function(y)
+{
+    var x_size = $asize(this.contents);
+    var i = 0;
+
+    while (i < x_size)
+    {
+        if (this.contents[i] == y)
+        {
+            return i;
+        }
+        i = i + 1;
+    }
+
+    throw("ValueError: tuple.index(x): x not in tuple");
+}

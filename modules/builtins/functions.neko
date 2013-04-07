@@ -127,6 +127,12 @@ var int = function(n)
 }
 
 
+var iter = function(iterable)
+{
+	return iterable.__iter__();
+}
+
+
 var float = function(n) 
 {
 	if ($typeof(n) == $tint 
@@ -296,8 +302,9 @@ $exports.bool     	= bool;
 $exports.callable 	= callable;
 $exports.divmod   	= divmod;
 $exports.enumerate	= enumerate;
-$exports.int      	= int;
 $exports.float    	= float;
+$exports.int      	= int;
+$exports.iter      	= iter;
 $exports.len	  	= len;
 $exports.list	  	= list;
 $exports.max      	= max;
