@@ -24,6 +24,7 @@ var all = function(iterable)
         {
             return false;
         }
+        i = i + 1;
     }
 
     return true;
@@ -45,6 +46,7 @@ var any = function(iterable)
         {
             return true;
         }
+        i = i + 1;
     }
 
     return false;
