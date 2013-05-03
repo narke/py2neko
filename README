@@ -1,22 +1,32 @@
 This will be a trans-compiler which converts Python to neko in order
 to run Python on NekoVM.
 
-Python3 is needed!
+
+## Code status
+
+The translation logic is yet incomplete.
+Work in progress.
 
 
-+ Usage:
+## Requirements
 
- narke@bt:~$./py2neko.py <python file>
- 
- 
-+ Code status:
- 
- The translation logic is yet incomplete.
+  + Python 3
+  + NekoVM
+  + Unix-like OS
 
 
+## Usage:
 
-Interesting URLs about Python AST:
-http://svn.python.org/projects/python/trunk/Lib/lib2to3/
-http://codemonkeytips.blogspot.com/2010/08/simple-python-nodevisitor-example.html
-http://eli.thegreenplace.net/2009/11/28/python-internals-working-with-python-asts/
-http://dev.pocoo.org/hg/sandbox/file/98ce1ce17c7c/ast/codegen.py
+    narke@darkstar:~$ git clone https://narke@github.com/narke/py2neko.git
+
+    narke@darkstar:~$ export NEKOPATH="/usr/lib/neko;/opt/py2neko/lib"
+
+    narke@darkstar:~$ cd py2neko.git
+
+    narke@darkstar:~/py2neko.git$ ./install.py  (root privileges needed)
+
+    narke@darkstar:~/py2neko.git$ ./py2neko.py <python file>
+
+    narke@darkstar:~/py2neko.git$ nekoc out.neko
+
+    narke@darkstar:~/py2neko.git$ neko out.n
