@@ -157,10 +157,6 @@ var len = function(object)
     {
         return $ssize(object);
     }
-    else if ($typeof(object) == $tchar)
-    {
-        return 1;
-    }
     else if ($typeof(object) == $tarray)
     {
         return $asize(object);
@@ -229,6 +225,12 @@ var pow = function(x, y, z)
     {
         return result;
     }
+}
+
+
+var print = function(value)
+{
+	$print(value);
 }
 
 
@@ -312,5 +314,6 @@ $exports.list	  	= list;
 $exports.max      	= max;
 $exports.min      	= min;
 $exports.pow      	= pow;
+$exports.print      = print;
 $exports.range		= range;
 $exports.sum      	= sum;

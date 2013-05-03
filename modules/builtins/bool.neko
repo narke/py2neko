@@ -60,6 +60,6 @@ $exports.__xor__ = function()
 }
 
 // Built-in constants
-$exports.False = bool(0);
-$exports.True = bool(1);
+$exports.False = false;
+$exports.True = true;
 
