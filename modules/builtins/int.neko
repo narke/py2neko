@@ -1,4 +1,4 @@
-var builtins	= $loader.loadmodule("builtins",$loader);
+var functions	= $loader.loadmodule("functions",$loader);
 var bool		= $loader.loadmodule("bool",$loader);
 var float		= $loader.loadmodule("float",$loader);
 
@@ -11,7 +11,7 @@ int.real = 0;
 
 $exports.__abs__ = function()
 {
-	return builtins.abs(this.numerator)
+	return functions.abs(this.numerator)
 }
 
 $exports.__add__ = function(y)
@@ -36,7 +36,7 @@ $exports.__ceil__ = function()
 
 $exports.__divmod__ = function(y)
 {
-	return builtins.divmod(this.numerator, y);
+	return functions.divmod(this.numerator, y);
 }
 
 $exports.__eq__ = function(y)
@@ -46,7 +46,7 @@ $exports.__eq__ = function(y)
 
 $exports.__float__ = function()
 {
-	return builtins.float(this.numerator);
+	return functions.float(this.numerator);
 }
 
 $exports.__floor__ = function()
@@ -86,7 +86,7 @@ $exports.__gt__ = function(y)
 
 $exports.__hash__ = function()
 {
-	return builtins.hash(this.numerator);
+	return functions.hash(this.numerator);
 }
 
 $exports.__index__ = function()
@@ -96,7 +96,7 @@ $exports.__index__ = function()
 
 $exports.__int__ = function()
 {
-	return builtins.int(this.numerator);
+	return functions.int(this.numerator);
 }
 
 $exports.__invert__ = function()
@@ -151,7 +151,7 @@ $exports.__pos__ = function()
 
 $exports.__pow__ = function(y)
 {
-	return builtins.pow(this.numerator, y);
+	return functions.pow(this.numerator, y);
 }
 
 $exports.__radd__ = function(y)
@@ -166,7 +166,7 @@ $exports.__rand__ = function(y)
 
 $exports.__rdivmod__ = function(y)
 {
-	return builtins.divmod(y, this.numerator);
+	return functions.divmod(y, this.numerator);
 }
 
 $exports.__repr__ = function()
@@ -206,7 +206,7 @@ $exports.__round__ = function()
 
 $exports.__rpow__ = function(y)
 {
-	return builtins.pow(this.numerator, y);
+	return functions.pow(this.numerator, y);
 }
 
 $exports.__rrshift__ = function(y)
@@ -241,7 +241,7 @@ $exports.__sizeof__ = function()
 
 $exports.__str__ = function(y)
 {
-	return builtins.str(this.numerator);
+	return functions.str(this.numerator);
 }
 
 $exports.__sub__ = function(y)

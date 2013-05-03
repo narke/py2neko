@@ -1,4 +1,4 @@
-var builtins	= $loader.loadmodule("builtins",$loader);
+var functions	= $loader.loadmodule("functions",$loader);
 var bool		= $loader.loadmodule("bool",$loader);
 
 var int = $new(null);
@@ -8,7 +8,7 @@ int.real = 0;
 
 $exports.__abs__ = function()
 {
-	return builtins.abs(this.numerator)
+	return functions.abs(this.numerator)
 }
 
 $exports.__add__ = function(y)
@@ -23,7 +23,7 @@ $exports.__bool__ = function()
 
 $exports.__divmod__ = function(y)
 {
-	return builtins.divmod(this.numerator, y);
+	return functions.divmod(this.numerator, y);
 }
 
 $exports.__eq__ = function(y)
@@ -33,7 +33,7 @@ $exports.__eq__ = function(y)
 
 $exports.__float__ = function()
 {
-	return builtins.float(this.numerator);
+	return functions.float(this.numerator);
 }
 
 $exports.__floordiv__ = function(y)
@@ -68,12 +68,12 @@ $exports.__gt__ = function(y)
 
 $exports.__hash__ = function()
 {
-	return builtins.hash(this.numerator);
+	return functions.hash(this.numerator);
 }
 
 $exports.__int__ = function()
 {
-	return builtins.int(this.numerator);
+	return functions.int(this.numerator);
 }
 
 $exports.__le__ = function(y)
@@ -113,7 +113,7 @@ $exports.__pos__ = function()
 
 $exports.__pow__ = function(y)
 {
-	return builtins.pow(this.numerator, y);
+	return functions.pow(this.numerator, y);
 }
 
 $exports.__radd__ = function(y)
@@ -123,7 +123,7 @@ $exports.__radd__ = function(y)
 
 $exports.__rdivmod__ = function(y)
 {
-	return builtins.divmod(y, this.numerator);
+	return functions.divmod(y, this.numerator);
 }
 
 $exports.__repr__ = function()
@@ -153,7 +153,7 @@ $exports.__round__ = function()
 
 $exports.__rpow__ = function(y)
 {
-	return builtins.pow(this.numerator, y);
+	return functions.pow(this.numerator, y);
 }
 
 $exports.__rsub__ = function(y)
@@ -168,7 +168,7 @@ $exports.__rtruediv__ = function(y)
 
 $exports.__str__ = function(y)
 {
-	return builtins.str(this.numerator);
+	return functions.str(this.numerator);
 }
 
 $exports.__sub__ = function(y)
