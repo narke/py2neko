@@ -148,7 +148,7 @@ class Py2Neko(ast.NodeVisitor):
 
     def visit_Num(self, node):
         print('Num :', repr(node.n))
-        return node.n
+        return str(node.n)
 
     def visit_BinOp(self, node):
         print("BinOp :")
@@ -166,7 +166,7 @@ class Py2Neko(ast.NodeVisitor):
 
     def visit_Assign(self, node):
         value = self.visit(node.value)
-
+        
         if isinstance(node.targets[0], (ast.Tuple, ast.List)):
             self.write_code("var %s = %s;" % ("id", value))
         else:
@@ -178,11 +178,7 @@ class Py2Neko(ast.NodeVisitor):
                 if "list" not in self.imported_modules:
                     self.imported_modules.append("list")
                     self.write_import('var list = $loader.loadmodule("list",$loader);')
-                list_declaration = "$new(null);\n"
-                list_declaration = list_declaration + "%s.contents = $amake(0);\n"
-                list_declaration = list_declaration + "$objsetproto(%s,list);\n"
-                list_declaration = list_declaration % (var, var)
-                self.write_code("var %s = %s" % (var, list_declaration))
+                self.write_code("var %s = %s;\n" % (var, value))
             elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Tuple):
                 pass
             elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Num):
@@ -192,7 +188,7 @@ class Py2Neko(ast.NodeVisitor):
                 int_declaration = int_declaration + "%s.denominator = 1;\n"
                 int_declaration = int_declaration + "%s.imag = 1;\n"
                 int_declaration = int_declaration + "%s.real = 1;\n"
-                int_declaration = int_declaration + "$objsetproto(%s,int);\n"
+                int_declaration = int_declaration + "$objsetproto(%s,int.int);\n"
                 int_declaration = int_declaration % (var, var, var, var, var)
                 self.write_code("var %s = %s" % (var, int_declaration))
 
@@ -235,11 +231,11 @@ class Py2Neko(ast.NodeVisitor):
         print("List :")
         # Is the list empty?
         if len(node.elts) == 0:
-            return
+            return "functions.list()"
         # Does it contains items?
         else:
-            list_elms = ", ".join([str(self.visit(elm)) for elm in node.elts])
-            # A list is created by conerting a tuple
+            list_elms = ", ".join([self.visit(elm) for elm in node.elts])
+            # A list is created by converting a tuple
             return "functions.list($array( %s ))" % (list_elms)
 
     def visit_FunctionDef(self, node):
