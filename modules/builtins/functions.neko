@@ -1,3 +1,4 @@
+var type_list = $loader.loadmodule("list",$loader);
 
 var abs = function(n) 
 {
@@ -131,7 +132,10 @@ var int = function(n)
 
 var iter = function(iterable)
 {
-	return iterable.__iter__();
+	if (iterable.type == 10)
+	{
+		return iterable.__iter__();
+	}
 }
 
 
@@ -153,22 +157,21 @@ var float = function(n)
 
 var len = function(object)
 {
-    if ($typeof(object) == $tstring)
-    {
-        return $ssize(object);
-    }
-    else if ($typeof(object) == $tarray)
-    {
-        return $asize(object);
-    }
+	return object.__len__();
 }
 
-var list = function(parameter) 
+var list = function(iterable) 
 {
-	if ($typeof(parameter) == $tarray)
+	if ($typeof(iterable) == $tarray)
 	{
-		// This is a tuple
-		return parameter;
+		var o = $new(null);
+		
+		// This is a tuple disguised as a list
+		o.contents = iterable;
+		o.type = 10;
+		
+		$objsetproto(o, type_list.list);
+		return o;
 	}
 }
 
@@ -230,7 +233,7 @@ var pow = function(x, y, z)
 
 var print = function(value)
 {
-	$print(value);
+	$print(value + "\n");
 }
 
 

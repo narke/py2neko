@@ -69,7 +69,7 @@ class Py2Neko(ast.NodeVisitor):
         "int"         : "int",
         "isinstance"  : "NOT_IMPLEMENTED",
         "issubclass"  : "NOT_IMPLEMENTED",
-        "iter"        : "NOT_IMPLEMENTED",
+        "iter"        : "iter",
         "len"         : "len",
         "list"        : "list",
         "locals"      : "NOT_IMPLEMENTED",
@@ -214,10 +214,10 @@ class Py2Neko(ast.NodeVisitor):
             return  node.id.lower()
 
         if node.id in self.BUILTIN_FUNCTIONS.keys():
-            if "builtins" not in self.imported_modules:
-                self.imported_modules.append("builtins")
-                self.write_import('var builtins = $loader.loadmodule("builtins",$loader);')
-            return "builtins." + node.id
+            if "functions" not in self.imported_modules:
+                self.imported_modules.append("functions")
+                self.write_import('var functions = $loader.loadmodule("functions",$loader);')
+            return "functions." + node.id
         return node.id
 
 
@@ -240,7 +240,7 @@ class Py2Neko(ast.NodeVisitor):
         else:
             list_elms = ", ".join([str(self.visit(elm)) for elm in node.elts])
             # A list is created by conerting a tuple
-            return "builtins.list($amake( %s ))" % (list_elms)
+            return "functions.list($array( %s ))" % (list_elms)
 
     def visit_FunctionDef(self, node):
         print("FunctionDef")
@@ -374,29 +374,16 @@ class Py2Neko(ast.NodeVisitor):
 
         iter_dummy = self.new_dummy_id()
 
-        self.write_code("var %s = iter(%s);" % (iter_dummy, for_iter))
-        self.write_code("var iter_len = len(%s);" % for_iter)
+        self.write_code("var %s = functions.iter(%s);" % (iter_dummy, for_iter))
+        self.write_code("var iter_len = functions.len(%s);" % for_iter)
         self.write_code("var __i__ = 0;")
-        self.write_code("    ")
-        self.write_code("while (__i__ < iter_len)")
-        self.write_code("{   ")
+        self.write_code("\nwhile (__i__ < iter_len)")
+        self.write_code("\n{\n")
         self.write_code("    var %s;" % for_target)
-        self.write_code("    ")
         self.write_code("    __i__ = __i__ + 1;")
-        self.write_code("     %s = %s.next();" % (for_target, iter_dummy))
-        self.write_code("}   ")
-        self.write_code("    ")
-
-        self.write_code("%s = %s;" % (for_target, for_iter))
-        self.write_code("__array_index__ = 0;")
-        if hasattr(node.iter, "id"):
-            self.write_code('while ( __array_index__ < $asize(%s) )' % (for_target))
-        else:
-            self.write_code('while ( __array_index__ < $asize(%s) )' % (for_target))
-        self.write_code('{')
+        self.write_code("     %s = %s.__next__();" % (for_target, iter_dummy))
         self.body_or_else(node)
-        self.write_code('__array_index__ = __array_index__ + 1;')
-        self.write_code('}')
+        self.write_code("}\n")
 
     def body_or_else(self, node):
         self.body(node.body)
