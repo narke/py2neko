@@ -1,12 +1,9 @@
 var type_list = $loader.loadmodule("list",$loader);
+var type_int  = $loader.loadmodule("int",$loader);
 
-var abs = function(n) 
+var abs = function(n)
 {
-	if (n < 0)
-	{
-		return 0 - n;
-	}
-	return n;
+    return n.__abs__();
 }
 
 
@@ -54,16 +51,16 @@ var any = function(iterable)
 }
 
 
-var bool = function(n) 
+var bool = function(n)
 {
-	if (n != 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    if (n != 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 
@@ -82,18 +79,7 @@ var callable = function(object)
 
 var divmod = function(x, y)
 {
-    if ($typeof(x) == $tint && $typeof(y) == $tint)
-    {
-        return $array($idiv(x - x % y, y), x % y);
-    }
-    else if ($typeof(x) == $tfloat || $typeof(y) == $tfloat)
-    {
-        return $array((x - x % y)/y, x % y);
-    }
-    else
-    {
-        throw("TypeError: an integer is required");
-    }
+	x.__divmod__(y)
 }
 
 
@@ -109,132 +95,120 @@ var enumerate = function(iterable)
     while(i < $asize(iterable))
     {
         return tuple(i, iterable[i]);
-    }    
+    }
 }
 
 
-var int = function(n) 
+var int = function(n)
 {
-	if ($typeof(n) == $tint 
-		|| $typeof(n) == $tfloat 
-		|| $typeof(n) == $tbool
-		|| $typeof(n) == $tstring)
-	{
-		try
-			return $int(n)
-		catch e 
-		{
-			$print(e);
-		}
-	}
+    var o = $new(null);
+
+    o.numerator   = n;
+    o.denominator = 1;
+    o.imag        = 1;
+    o.real        = 1;
+    o.type        = 11;
+
+    $objsetproto(o, type_int.int);
+    
+    return o;
 }
 
 
 var iter = function(iterable)
 {
-	if (iterable.type == 10)
-	{
-		return iterable.__iter__();
-	}
+    if (iterable.type == 10)
+    {
+        return iterable.__iter__();
+    }
 }
 
 
-var float = function(n) 
+var float = function(n)
 {
-	if ($typeof(n) == $tint 
-		|| $typeof(n) == $tfloat 
-		|| $typeof(n) == $tbool
-		|| $typeof(n) == $tstring)
-	{
-		try
-			return $float(n)
-		catch e 
-		{
-			$print(e);
-		}
-	}
+    if ($typeof(n) == $tint
+        || $typeof(n) == $tfloat
+        || $typeof(n) == $tbool
+        || $typeof(n) == $tstring)
+    {
+        try
+            return $float(n)
+        catch e
+        {
+            $print(e);
+        }
+    }
 }
 
 var len = function(object)
 {
-	return object.__len__();
+    return object.__len__();
 }
 
-var list = function(iterable) 
+var list = function(iterable)
 {
-	if ($typeof(iterable) == $tarray)
-	{
-		var o = $new(null);
-		
-		// This is a tuple disguised as a list
-		o.contents = iterable;
-		o.type = 10;
-		
-		$objsetproto(o, type_list.list);
-		return o;
-	}
+    if ($typeof(iterable) == $tarray)
+    {
+        var o = $new(null);
+
+        // This is a tuple disguised as a list
+        o.contents = iterable;
+        o.type = 10;
+
+        $objsetproto(o, type_list.list);
+        return o;
+    }
 }
 
 
 var max = function(a, b)
 {
-	if (a >= b)
-	{
-		return a;
-	}
-	else
-	{
-		return b;
-	}
+    if (a >= b)
+    {
+        return a;
+    }
+    else
+    {
+        return b;
+    }
 }
 
 
 var min = function(a, b)
 {
-	if (a <= b)
-	{
-		return a;
-	}
-	else
-	{
-		return b;
-	}
+    if (a <= b)
+    {
+        return a;
+    }
+    else
+    {
+        return b;
+    }
 }
 
 
 var pow = function(x, y, z)
 {
-    if (($typeof(x) != $tint && $typeof(x) != $tfloat)
-        || ($typeof(y) != $tint && $typeof(y) != $tfloat)
-        || ($typeof(z) != $tint && $typeof(z) != $tfloat))
-    {
-        throw("TypeError: an integer or float is required");
-    }
-    
-    var i = 0;
-    var result = x;
-
-    while (i < y-1)
-    {
-        result = result * x;
-        i = i + 1;
-    }
-
-    if (z != 0)
-    {
-        return result % z;
-    }
-    else
-    {
-        return result;
-    }
+	x.__pow__(y);
 }
 
 
-var print = function(value)
+var print = $varargs(function(args)
 {
-	$print(value + "\n");
-}
+	var nb_args = $asize(args);
+	var i = 0;
+	
+	while ( i < nb_args )
+	{
+		if ( args[i].type == 11 )
+		{
+			$print(args[i].numerator);
+		}
+		i = i + 1;
+	}
+	
+	$print("\n");
+});
 
 
 var range = function(start, stop, step)
@@ -289,34 +263,34 @@ var range = function(start, stop, step)
 
 var sum = function(list)
 {
-	var length = $asize(list);
-	var i = 0;
-	var sum = 0;
-	
-	while (i < length)
+    var length = $asize(list);
+    var i = 0;
+    var sum = 0;
+
+    while (i < length)
     {
-		sum = sum + list[i];
+        sum = sum + list[i];
     }
-    
+
     return sum;
 }
 
 
-$exports.abs      	= abs;
-$exports.all      	= all;
-$exports.any      	= any;
-$exports.bool     	= bool;
-$exports.callable 	= callable;
-$exports.divmod   	= divmod;
-$exports.enumerate	= enumerate;
-$exports.float    	= float;
-$exports.int      	= int;
-$exports.iter      	= iter;
-$exports.len	  	= len;
-$exports.list	  	= list;
-$exports.max      	= max;
-$exports.min      	= min;
-$exports.pow      	= pow;
+$exports.abs        = abs;
+$exports.all        = all;
+$exports.any        = any;
+$exports.bool       = bool;
+$exports.callable   = callable;
+$exports.divmod     = divmod;
+$exports.enumerate  = enumerate;
+$exports.float      = float;
+$exports.int        = int;
+$exports.iter       = iter;
+$exports.len        = len;
+$exports.list       = list;
+$exports.max        = max;
+$exports.min        = min;
+$exports.pow        = pow;
 $exports.print      = print;
-$exports.range		= range;
-$exports.sum      	= sum;
+$exports.range      = range;
+$exports.sum        = sum;

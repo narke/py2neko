@@ -1,275 +1,438 @@
-var functions	= $loader.loadmodule("functions",$loader);
-var bool		= $loader.loadmodule("bool",$loader);
-var float		= $loader.loadmodule("float",$loader);
+var functions   = $loader.loadmodule("functions",$loader);
+var bool        = $loader.loadmodule("bool",$loader);
+var float       = $loader.loadmodule("float",$loader);
 
 var int = $new(null);
 
-int.numerator 	= 0;
-int.denominator = 1;
-int.imag = 0;
-int.real = 0;
 
-$exports.__abs__ = function()
+var int_create = function()
 {
-	return functions.abs(this.numerator)
+    var o = $new(null);
+
+    o.numerator = 0;
+    o.denominator = 1;
+    o.imag = 0;
+    o.real = 0;
+    o.type = 11;
+    
+    $objsetproto(o, int);
+    
+    return o;
 }
 
-$exports.__add__ = function(y)
+int.__abs__ = function()
 {
-	return this.numerator + y;
+    o = int_create();
+
+    o.numerator = this.numerator;
+
+    if (this.numerator < 0)
+    {
+        o.numerator = 0 - this.numerator;
+        return o;
+    }
+
+    return o;
 }
 
-$exports.__and__ = function(y)
+int.__add__ = function(y)
 {
-	return this.numerator & n;
+    var o = int_create();
+
+    o.numerator = this.numerator + y.numerator;
+
+    return o;
 }
 
-$exports.__bool__ = function()
+int.__and__ = function(y)
 {
-	retutn bool.bool(this.numerator)
+    var o = int_create();
+    
+    o.numerator = this.numerator & y.numerator;
+    
+    return o;
 }
 
-$exports.__ceil__ = function()
+int.__bool__ = function()
 {
-	return this.numerator;
+    return functions.bool(this.numerator);
 }
 
-$exports.__divmod__ = function(y)
+int.__ceil__ = function()
 {
-	return functions.divmod(this.numerator, y);
+    var o = int_create();
+
+    o.numerator = this.numerator;
+
+    return o;
 }
 
-$exports.__eq__ = function(y)
+int.__divmod__ = function(y)
 {
-	return (this.numerator == y);
+	var a = int_create();
+	var b = int_create();
+	
+	a.numerator = $idiv(this.numerator - this.numerator % y.numerator, y.numerator);
+	b.numerator = this.numerator % y.numerator;
+	
+	// TODO create tuple
+	
+	//return (a, b);
 }
 
-$exports.__float__ = function()
+int.__eq__ = function(y)
 {
-	return functions.float(this.numerator);
+    return this.numerator == y.numerator;
 }
 
-$exports.__floor__ = function()
+int.__float__ = function()
 {
-	return this.numerator;
+    return functions.float(this.numerator);
 }
 
-$exports.__floordiv__ = function(y)
+int.__floor__ = function()
 {
-	return ((this.numerator / y) - ((this.numerator / y) % 1));
+    var o = int_create();
+
+    o.numerator = this.numerator;
+
+    return o;
 }
 
-$exports.__format__ = function()
+int.__floordiv__ = function(y)
 {
-	//TODO
+    var o = int_create();
+
+    o.numerator = (this.numerator / y.numerator) - ((this.numerator / y.numerator) % 1);
+
+    return o;
 }
 
-$exports.__ge__ = function(y)
+int.__format__ = function()
 {
-	return (this.numerator >= y);
+    //TODO
 }
 
-$exports.__getattribute__ = function()
+int.__ge__ = function(y)
 {
-	//TODO
+    return (this.numerator >= y.numerator);
 }
 
-$exports.__getnewargs__ = function()
+int.__getattribute__ = function()
 {
-	//TODO
+    //TODO
 }
 
-$exports.__gt__ = function(y)
+int.__getnewargs__ = function()
 {
-	return (this.numerator > y);
+    //TODO
 }
 
-$exports.__hash__ = function()
+int.__gt__ = function(y)
 {
-	return functions.hash(this.numerator);
+    return this.numerator > y.numerator;
 }
 
-$exports.__index__ = function()
+int.__hash__ = function()
 {
-	//TODO
+    // TODO return functions.hash(this.numerator);
 }
 
-$exports.__int__ = function()
+int.__index__ = function()
 {
-	return functions.int(this.numerator);
+    //TODO
 }
 
-$exports.__invert__ = function()
+int.__int__ = function(obj)
 {
-	//TODO
+    o = int_create();
+
+    if ( obj.type == 11 )
+        o.numerator = obj.numerator;
+
+    return o;
 }
 
-$exports.__le__ = function(y)
+int.__invert__ = function()
 {
-	return (this.numerator <= y);
+    //TODO
 }
 
-$exports.__lshift__ = function()
+int.__le__ = function(y)
 {
-	return (this.numerator << y);
+    return this.numerator <= y.numerator;
 }
 
-$exports.__lt__ = function(y)
+int.__lshift__ = function()
 {
-	return (this.numerator < y);
+    return this.numerator << y.numerator;
 }
 
-$exports.__mod__ = function(y)
+int.__lt__ = function(y)
 {
-	return this.numerator % y;
+    return this.numerator < y.numerator;
 }
 
-$exports.__mul__ = function(y)
+int.__mod__ = function(y)
 {
-	return this.numerator * y;
+    o = int_create();
+    
+    o.numerator = this.numerator % y.numerator;
+
+    return o;
 }
 
-$exports.__ne__ = function(y)
+int.__mul__ = function(y)
 {
-	return (this.numerator != y);
+    o = int_create();
+
+    o.numerator = this.numerator * y.numerator;
+
+    return o;
 }
 
-$exports.__neg__ = function()
+int.__ne__ = function(y)
 {
-	return 0 - this.numerator;
+    return (this.numerator != y.numerator);
 }
 
-$exports.__or__ = function(y)
+int.__neg__ = function()
 {
-	return this.numerator | y;
+    o = int_create();
+
+    o.numerator = 0 - this.numerator;
+
+    return o;
 }
 
-$exports.__pos__ = function()
+int.__or__ = function(y)
 {
-	return 0 + this.numerator;
+    o = int_create();
+
+    o.numerator = this.numerator | y.numerator;
+    
+    return o;
 }
 
-$exports.__pow__ = function(y)
+int.__pos__ = function()
 {
-	return functions.pow(this.numerator, y);
+    o = int_create();
+    
+    o.numerator = 0 + this.numerator;
+    
+    return o;
 }
 
-$exports.__radd__ = function(y)
+int.__pow__ = function(y)
 {
-	return y + this.numerator;
+	i = int_create();
+	i.numerator = 0;
+	
+    var result = this.numerator;
+
+    while (i.numerator < y.numerator - 1)
+    {
+        result = result * this.numerator;
+        i.numerator = i.numerator + 1;
+    }
+    
+    return i;
 }
 
-$exports.__rand__ = function(y)
+int.__radd__ = function(y)
 {
-	return y & this.numerator;
+    o = int_create();
+    
+    o.numerator = y.numerator + this.numerator;
+    
+    return o;
 }
 
-$exports.__rdivmod__ = function(y)
+int.__rand__ = function(y)
 {
-	return functions.divmod(y, this.numerator);
+    o = int_create();
+
+    o.numerator = y.numerator & this.numerator;
+    
+    return o;
 }
 
-$exports.__repr__ = function()
+int.__rdivmod__ = function(y)
 {
-	//TODO
+	var a = int_create();
+	var b = int_create();
+	
+	a.numerator = this.numerator % y.numerator;
+	b.numerator = $idiv(this.numerator - this.numerator % y.numerator, y.numerator);
+	
+	// TODO create tuple
+	
+	//return (a, b);
 }
 
-$exports.__rfloordiv__ = function(y)
+int.__repr__ = function()
 {
-	return ((y / this.numerator) - ((y / this.numerator) % 1));
+    //TODO
 }
 
-$exports.__rlshift__ = function(y)
+int.__rfloordiv__ = function(y)
 {
-	return (y << x);
+    o = int_create();
+    
+    o.numerator = (y.numerator / this.numerator) - ((y.numerator / this.numerator) % 1);
+    
+    return o;
 }
 
-$exports.__rmod__ = function(y)
+int.__rlshift__ = function(y)
 {
-	return (y % x);
+    o = int_create();
+
+    o.numerator = y.numerator << this.numerator;
+    
+    return o;
 }
 
-$exports.__rmul__ = function(y)
+int.__rmod__ = function(y)
 {
-	return (y * x);
+    o = int_create();
+
+    o.numerator = y.numerator % this.numerator;
+    
+    return o;
 }
 
-$exports.__ror__ = function(y)
+int.__rmul__ = function(y)
 {
-	return (y | x);
+    o = int_create();
+
+    o.numerator = y.numerator * this.numerator;
+    
+    return o;
 }
 
-$exports.__round__ = function()
+int.__ror__ = function(y)
 {
-	return this.numerator;
+    o = int_create();
+
+    o.numerator = y.numerator | this.numerator;
+    
+    return o;
 }
 
-$exports.__rpow__ = function(y)
+int.__round__ = function()
 {
-	return functions.pow(this.numerator, y);
+    o = int_create();
+
+    o.numerator = this.numerator;
+
+    return o;
 }
 
-$exports.__rrshift__ = function(y)
+int.__rpow__ = function(y)
 {
-	return y >> x;
+    // TODO
 }
 
-$exports.__rshift__ = function(y)
+int.__rrshift__ = function(y)
 {
-	return x >> y;
+    o = int_create();
+
+    o.numerator = y.numerator >> this.numerator;
+
+    return o;
 }
 
-$exports.__rsub__ = function(y)
+int.__rshift__ = function(y)
 {
-	return y - x;
+    o = int_create();
+
+    o.numerator = this.numerator >> y.numerator;
+    
+    return o;
 }
 
-$exports.__rtruediv__ = function(y)
+int.__rsub__ = function(y)
 {
-	return y / x;
+    o = int_create();
+
+    o.numerator = y.numerator - this.numerator;
+    
+    return o;
 }
 
-$exports.__rxor__ = function(y)
+int.__rtruediv__ = function(y)
 {
-	return y ^ x;
+    o = int_create();
+
+    o.numerator = y.numerator / this.numerator;
+    
+    return o;
 }
 
-$exports.__sizeof__ = function()
+int.__rxor__ = function(y)
 {
-	//TODO
+    o = int_create();
+
+    o.numerator = y.numerator ^ this.numerator;
+    
+    return o;
 }
 
-$exports.__str__ = function(y)
+int.__sizeof__ = function()
 {
-	return functions.str(this.numerator);
+    //TODO
 }
 
-$exports.__sub__ = function(y)
+int.__str__ = function(y)
 {
-	return x - y;
+    return functions.str(this.numerator);
 }
 
-$exports.__truediv__ = function(y)
+int.__sub__ = function(y)
 {
-	return x / y;
+    o = int_create();
+
+    o.numerator = this.numerator - y.numerator;
+    
+    return o;
 }
 
-$exports.__trunc__ = function()
+int.__truediv__ = function(y)
 {
-	return this.numerator;
+    o = int_create();
+
+    o.numerator = this.numerator / y.numerator;
+    
+    return o;
 }
 
-$exports.__xor__ = function(y)
+int.__trunc__ = function()
 {
-	return this.numerator ^ y;
+    o = int_create();
+
+    o.numerator = this.numerator;
+
+    return o;
 }
 
-$exports.bit_length = function()
+int.__xor__ = function(y)
 {
-	return int.bit_length(this.numerator);
+    o = int_create();
+
+    o.numerator = this.numerator ^ y.numerator;
+    
+    return o;
 }
 
-$exports.conjugate = function()
+int.bit_length = function()
 {
-	//TODO
+    return int.bit_length(this.numerator);
 }
+
+int.conjugate = function()
+{
+    //TODO
+}
+
+$exports.int = int;

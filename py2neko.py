@@ -17,12 +17,12 @@ import sys
 class Py2Neko(ast.NodeVisitor):
 
     COMPARISON_SYMBOLS = {
-        Lt    : "<",
-        Gt    : ">",
-        Eq    : "==",
-        LtE   : "<=",
-        GtE   : ">=",
-        NotEq : "!",
+        Lt    : "__lt__",
+        Gt    : "__gt__",
+        Eq    : "__eq__",
+        LtE   : "__le__",
+        GtE   : "__ge__",
+        NotEq : "__ne__",
         NotIn : "NOT_IMPLEMENTED",
         In    : "NOT_IMPLEMENTED",
         Is    : "NOT_IMPLEMENTED",
@@ -104,23 +104,24 @@ class Py2Neko(ast.NodeVisitor):
         "__import__()": "NOT_IMPLEMENTED"}
 
     BINARY_OP = {
-        'Add'      : '+',
-        'Sub'      : '-',
-        'Mult'     : '*',
-        'Div'      : '/',
-        'FloorDiv' : '/',
-        'Mod'      : '%',
-        'LShift'   : '<<',
-        'RShift'   : '>>',
-        'BitOr'    : '|',
-        'BitXor'   : '^',
-        'BitAnd'   : '&'}
+        'Add'      : '__add__',
+        'Sub'      : '__sub__',
+        'Mult'     : '__mult__',
+        'Div'      : '__div__',
+        'FloorDiv' : '__floordiv__',
+        'Mod'      : '__mod__',
+        'LShift'   : '__lshift__',
+        'RShift'   : '__rshift__',
+        'BitOr'    : '__or__',
+        'BitXor'   : '__xor__',
+        'BitAnd'   : '__and__'}
 
     def __init__(self):
         self.code = []
         self.imports = []
         self.imported_modules = []
         self.dummy_id = 0
+        self.delcared_identifiers = []
 
 
     def write_code(self, elem):
@@ -148,7 +149,7 @@ class Py2Neko(ast.NodeVisitor):
 
     def visit_Num(self, node):
         print('Num :', repr(node.n))
-        return str(node.n)
+        return "functions.int(%s)" % str(node.n)
 
     def visit_BinOp(self, node):
         print("BinOp :")
@@ -156,7 +157,7 @@ class Py2Neko(ast.NodeVisitor):
         left = self.visit(node.left)
         right = self.visit(node.right)
 
-        return "(%s) %s (%s)" % (left, self.get_binary_op(node), right)
+        return "%s.%s(%s)" % (left, self.get_binary_op(node), right)
 
 
     def visit_Str(self, node):
@@ -166,32 +167,29 @@ class Py2Neko(ast.NodeVisitor):
 
     def visit_Assign(self, node):
         value = self.visit(node.value)
-        
+
         if isinstance(node.targets[0], (ast.Tuple, ast.List)):
             self.write_code("var %s = %s;" % ("id", value))
         else:
-            var = self.visit(node.targets[0])
+            identifier = self.visit(node.targets[0])
 
-            if isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Call):
-                self.write_code("var %s = %s" % (var, value))
-            elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.List):
+            if isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.List):
                 if "list" not in self.imported_modules:
                     self.imported_modules.append("list")
                     self.write_import('var list = $loader.loadmodule("list",$loader);')
-                self.write_code("var %s = %s;\n" % (var, value))
             elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Tuple):
                 pass
             elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Num):
-                int_declaration =  "$new(null);\n"
-                int_declaration = int_declaration + "%s.numerator"
-                int_declaration = int_declaration + " = %s;\n" % (value)
-                int_declaration = int_declaration + "%s.denominator = 1;\n"
-                int_declaration = int_declaration + "%s.imag = 1;\n"
-                int_declaration = int_declaration + "%s.real = 1;\n"
-                int_declaration = int_declaration + "$objsetproto(%s,int.int);\n"
-                int_declaration = int_declaration % (var, var, var, var, var)
-                self.write_code("var %s = %s" % (var, int_declaration))
+                if "int" not in self.imported_modules:
+                    self.imported_modules.append("int")
+                    self.write_import('var int = $loader.loadmodule("int",$loader);')
 
+            # TODO: make it context dependent
+            if identifier not in self.delcared_identifiers:
+                self.write_code("var %s = %s;" % (identifier, value))
+                self.delcared_identifiers.append(identifier)
+            else:
+                self.write_code("%s = %s;" % (identifier, value))
 
         ast.NodeVisitor.generic_visit(self, node)
 
@@ -214,6 +212,7 @@ class Py2Neko(ast.NodeVisitor):
                 self.imported_modules.append("functions")
                 self.write_import('var functions = $loader.loadmodule("functions",$loader);')
             return "functions." + node.id
+
         return node.id
 
 
@@ -353,7 +352,7 @@ class Py2Neko(ast.NodeVisitor):
 
     def visit_Compare(self, node):
         for op, right in zip(node.ops, node.comparators):
-            self.write_code("%s %s %s" % (self.visit(node.left), self.COMPARISON_SYMBOLS[type(op)], self.visit(right)))
+            self.write_code("%s.%s(%s)" % (self.visit(node.left), self.COMPARISON_SYMBOLS[type(op)], self.visit(right)))
 
     def visit_BoolOp(self, node):
         for i, value in enumerate(node.values):
@@ -379,7 +378,7 @@ class Py2Neko(ast.NodeVisitor):
         self.write_code("    __i__ = __i__ + 1;")
         self.write_code("     %s = %s.__next__();" % (for_target, iter_dummy))
         self.body_or_else(node)
-        self.write_code("}\n")
+        self.write_code("}")
 
     def body_or_else(self, node):
         self.body(node.body)
