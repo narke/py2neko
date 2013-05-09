@@ -55,16 +55,16 @@ var any = function(iterable)
 
 var bool = function(n)
 {
-	$print(n+"\n");
-	var o = $new(null);
+    $print(n+"\n");
+    var o = $new(null);
 
-	o.numerator = n;
+    o.numerator = n;
     o.type = 12;
     
     $objsetproto(o, type_bool.bool);
     
     return o;
-	//type_bool.__new__(n);
+    //type_bool.__new__(n);
 }
 
 
@@ -83,7 +83,7 @@ var callable = function(object)
 
 var divmod = function(x, y)
 {
-	x.__divmod__(y)
+    x.__divmod__(y)
 }
 
 
@@ -196,24 +196,24 @@ var pow = function(x, y, z)
 
 var print = $varargs(function(args)
 {
-	var nb_args = $asize(args);
-	var i = 0;
+    var nb_args = $asize(args);
+    var i = 0;
 	
-	while ( i < nb_args )
+    while ( i < nb_args )
+    {
+	if ( args[i].type == 11 || args[i].type == 12 )
 	{
-		if ( args[i].type == 11 || args[i].type == 12 )
-		{
-			$print(args[i].numerator);
-		}
-		else if ( args[i].type == 13 )
-		{
-			$print(args[i].real);
-		}
-		
-		i = i + 1;
+	    $print(args[i].numerator);
 	}
+	else if ( args[i].type == 13 )
+	{
+	    $print(args[i].real);
+	}
+		
+	i = i + 1;
+    }
 	
-	$print("\n");
+    $print("\n");
 });
 
 

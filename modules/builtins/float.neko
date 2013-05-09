@@ -1,5 +1,5 @@
 var functions	= $loader.loadmodule("functions",$loader);
-var bool		= $loader.loadmodule("bool",$loader);
+var bool	= $loader.loadmodule("bool",$loader);
 
 var float = $new(null);
 
@@ -18,7 +18,7 @@ var float_create = function()
 
 float.__abs__ = function()
 {
-	o = float_create();
+    o = float_create();
 
     o.real = this.real;
 
@@ -33,7 +33,7 @@ float.__abs__ = function()
 
 float.__add__ = function(y)
 {
-	var o = float_create();
+    var o = float_create();
 
     o.real = this.real + y.real;
 
@@ -42,38 +42,38 @@ float.__add__ = function(y)
 
 float.__bool__ = function()
 {
-	var o = bool.__new__(0);
+    var o = bool.__new__(0);
 	
-	if (this.real != 0 )
-	{
-		o.numerator = 1;
-	}
-	else
-	{
-		o.numerator = 0;
-	}
+    if (this.real != 0 )
+    {
+	o.numerator = 1;
+    }
+    else
+    {
+	o.numerator = 0;
+    }
 	
-	retutn o;
+    retutn o;
 }
 
 float.__divmod__ = function(y)
 {
-	// TODO
+    // TODO
 }
 
 float.__eq__ = function(y)
 {
-	return this.real == y.real;
+    return this.real == y.real;
 }
 
 float.__float__ = function(obj)
 {
-	// TODO
+    // TODO
 }
 
 float.__floordiv__ = function(y)
 {
-	var o = float_create();
+    var o = float_create();
 
     o.real = (this.real / y.real) - ((this.real / y.real) % 1);
 
@@ -82,52 +82,52 @@ float.__floordiv__ = function(y)
 
 float.__format__ = function()
 {
-	//TODO
+    //TODO
 }
 
 float.__ge__ = function(y)
 {
-	return (this.real >= y.real);
+    return (this.real >= y.real);
 }
 
 float.__getattribute__ = function()
 {
-	//TODO
+    //TODO
 }
 
 float.__getnewargs__ = function()
 {
-	//TODO
+    //TODO
 }
 
 float.__gt__ = function(y)
 {
-	return this.real > y.real;
+    return this.real > y.real;
 }
 
 float.__hash__ = function()
 {
-	// TODO
+    // TODO
 }
 
 float.__int__ = function()
 {
-	return functions.int(this.real);
+    return functions.int(this.real);
 }
 
 float.__le__ = function(y)
 {
-	return this.real <= y.real;
+    return this.real <= y.real;
 }
 
 float.__lt__ = function(y)
 {
-	return this.real < y.real;
+   return this.real < y.real;
 }
 
 float.__mod__ = function(y)
 {
-	o = float_create();
+    o = float_create();
     
     o.real = this.real % y.real;
 
@@ -136,7 +136,7 @@ float.__mod__ = function(y)
 
 float.__mul__ = function(y)
 {
-	o = float_create();
+    o = float_create();
     
     o.real = this.real * y.real;
 
@@ -145,12 +145,12 @@ float.__mul__ = function(y)
 
 float.__ne__ = function(y)
 {
-	return this.numerator != y.real;
+    return this.numerator != y.real;
 }
 
 float.__neg__ = function()
 {
-	o = float_create();
+    o = float_create();
     
     o.real = 0 - this.real;
 
@@ -159,7 +159,7 @@ float.__neg__ = function()
 
 float.__pos__ = function()
 {
-	o = float_create();
+    o = float_create();
     
     o.real = 0 + this.real;
 
@@ -168,8 +168,8 @@ float.__pos__ = function()
 
 float.__pow__ = function(y)
 {
-	i = float_create();
-	i.real = 0;
+    i = float_create();
+    i.real = 0;
 	
     var result = this.real;
 
@@ -184,7 +184,7 @@ float.__pow__ = function(y)
 
 float.__radd__ = function(y)
 {
-	o = float_create();
+    o = float_create();
     
     o.real = y.real + this.real;
 
@@ -193,22 +193,22 @@ float.__radd__ = function(y)
 
 float.__rdivmod__ = function(y)
 {
-	// TODO
+    // TODO
 }
 
 float.__repr__ = function()
 {
-	//TODO
+    //TODO
 }
 
 float.__rfloordiv__ = function(y)
 {
-	// TODO
+    // TODO
 }
 
 float.__rmod__ = function(y)
 {
-	o = float_create();
+    o = float_create();
     
     o.real = y.real % this.real;
 
@@ -217,7 +217,7 @@ float.__rmod__ = function(y)
 
 float.__rmul__ = function(y)
 {
-	o = float_create();
+    o = float_create();
     
     o.real = y.real * this.real;
 
@@ -226,17 +226,17 @@ float.__rmul__ = function(y)
 
 float.__round__ = function()
 {
-	// TODO
+    // TODO
 }
 
 float.__rpow__ = function(y)
 {
-	// TODO
+    // TODO
 }
 
 float.__rsub__ = function(y)
 {
-	o = float_create();
+    o = float_create();
     
     o.real = y.real - this.real;
 
@@ -245,7 +245,7 @@ float.__rsub__ = function(y)
 
 float.__rtruediv__ = function(y)
 {
-	o = float_create();
+    o = float_create();
     
     o.real = y.real / this.real;
 
@@ -254,12 +254,12 @@ float.__rtruediv__ = function(y)
 
 float.__str__ = function(y)
 {
-	return functions.str(this.real);
+    return functions.str(this.real);
 }
 
 float.__sub__ = function(y)
 {
-	o = float_create();
+    o = float_create();
     
     o.real =  this.real - y.real;
 
@@ -268,7 +268,7 @@ float.__sub__ = function(y)
 
 float.__truediv__ = function(y)
 {
-	o = float_create();
+    o = float_create();
     
     o.real =  this.real / y.real;
 
@@ -277,27 +277,27 @@ float.__truediv__ = function(y)
 
 float.__trunc__ = function()
 {
-	// TODO
+    // TODO
 }
 
 float.as_integer_ratio = function()
 {
-	//TODO
+    //TODO
 }
 
 float.conjugate = function()
 {
-	//TODO
+    //TODO
 }
 
 float.hex = function()
 {
-	//TODO
+    //TODO
 }
 
 float.is_integer = function()
 {
-	//TODO
+    //TODO
 }
 
 
@@ -305,7 +305,7 @@ float.is_integer = function()
 
 float.fromhex = function()
 {
-	//TODO
+    //TODO
 }
 
 

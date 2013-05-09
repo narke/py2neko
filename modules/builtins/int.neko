@@ -69,15 +69,15 @@ int.__ceil__ = function()
 
 int.__divmod__ = function(y)
 {
-	var a = int_create();
-	var b = int_create();
+    var a = int_create();
+    var b = int_create();
 	
-	a.numerator = $idiv(this.numerator - this.numerator % y.numerator, y.numerator);
-	b.numerator = this.numerator % y.numerator;
+    a.numerator = $idiv(this.numerator - this.numerator % y.numerator, y.numerator);
+    b.numerator = this.numerator % y.numerator;
 	
-	// TODO create tuple
+    // TODO create tuple
 	
-	//return (a, b);
+    //return (a, b);
 }
 
 int.__eq__ = function(y)
@@ -165,9 +165,9 @@ int.__le__ = function(y)
 
 int.__lshift__ = function()
 {
-	o = int_create();
+    o = int_create();
 	
-	o.numerator = this.numerator << y.numerator;
+    o.numerator = this.numerator << y.numerator;
 	
     return o;
 }
@@ -229,8 +229,8 @@ int.__pos__ = function()
 
 int.__pow__ = function(y)
 {
-	i = int_create();
-	i.numerator = 0;
+    i = int_create();
+    i.numerator = 0;
 	
     var result = this.numerator;
 
@@ -263,15 +263,15 @@ int.__rand__ = function(y)
 
 int.__rdivmod__ = function(y)
 {
-	var a = int_create();
-	var b = int_create();
+    var a = int_create();
+    var b = int_create();
 	
-	a.numerator = this.numerator % y.numerator;
-	b.numerator = $idiv(this.numerator - this.numerator % y.numerator, y.numerator);
+    a.numerator = this.numerator % y.numerator;
+    b.numerator = $idiv(this.numerator - this.numerator % y.numerator, y.numerator);
 	
-	// TODO create tuple
+    // TODO create tuple
 	
-	//return (a, b);
+    //return (a, b);
 }
 
 int.__repr__ = function()

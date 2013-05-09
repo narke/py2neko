@@ -8,7 +8,7 @@ var bool_create = function(n)
 {
     var o = $new(null);
 
-	o.numerator = n;
+    o.numerator = n;
     o.type = 12;
     
     $objsetproto(o, bool);
@@ -18,47 +18,47 @@ var bool_create = function(n)
 
 bool.__new__ = function(n)
 {
-	return bool_create(n);
+    return bool_create(n);
 }
 
 bool.__and__ = function(y)
 {
-	return this.x & y;
+    return this.x & y;
 }
 
 bool.__or__ = function(y)
 {
-	return this.x | y;
+    return this.x | y;
 }
 
 bool.__rand__ = function(y)
 {
-	return y & this.x;
+    return y & this.x;
 }
 
 bool.__repr__ = function(y)
 {
-	;	// TODO
+    // TODO
 }
 
 bool.__ror__ = function(y)
 {
-	return y | this.x;
+    return y | this.x;
 }
 
 bool.__rxor__ = function(y)
 {
-	return y ^ this.x;
+    return y ^ this.x;
 }
 
 bool.__str__ = function(y)
 {
-	;	// TODO
+    // TODO
 }
 
 bool.__xor__ = function()
 {
-	return this.x ^ y;
+    return this.x ^ y;
 }
 
 // Built-in constants
