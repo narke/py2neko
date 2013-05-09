@@ -115,7 +115,7 @@ int.__format__ = function()
 
 int.__ge__ = function(y)
 {
-    return (this.numerator >= y.numerator);
+    return this.numerator >= y.numerator;
 }
 
 int.__getattribute__ = function()
@@ -165,7 +165,11 @@ int.__le__ = function(y)
 
 int.__lshift__ = function()
 {
-    return this.numerator << y.numerator;
+	o = int_create();
+	
+	o.numerator = this.numerator << y.numerator;
+	
+    return o;
 }
 
 int.__lt__ = function(y)
@@ -193,7 +197,7 @@ int.__mul__ = function(y)
 
 int.__ne__ = function(y)
 {
-    return (this.numerator != y.numerator);
+    return this.numerator != y.numerator;
 }
 
 int.__neg__ = function()

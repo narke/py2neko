@@ -149,7 +149,16 @@ class Py2Neko(ast.NodeVisitor):
 
     def visit_Num(self, node):
         print('Num :', repr(node.n))
-        return "functions.int(%s)" % str(node.n)
+        if type(node.n) == type(1):
+            if "int" not in self.imported_modules:
+                self.imported_modules.append("int")
+                self.write_import('var int = $loader.loadmodule("int",$loader);')
+            return "functions.int(%s)" % str(node.n)
+        elif type(node.n) == type(1.1):
+            if "float" not in self.imported_modules:
+                self.imported_modules.append("float")
+                self.write_import('var float = $loader.loadmodule("float",$loader);')
+            return "functions.float(%s)" % str(node.n)
 
     def visit_BinOp(self, node):
         print("BinOp :")
@@ -179,10 +188,6 @@ class Py2Neko(ast.NodeVisitor):
                     self.write_import('var list = $loader.loadmodule("list",$loader);')
             elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Tuple):
                 pass
-            elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Num):
-                if "int" not in self.imported_modules:
-                    self.imported_modules.append("int")
-                    self.write_import('var int = $loader.loadmodule("int",$loader);')
 
             # TODO: make it context dependent
             if identifier not in self.delcared_identifiers:
@@ -205,7 +210,13 @@ class Py2Neko(ast.NodeVisitor):
         print("Name :", node.id)
 
         if node.id in ("True", "False"):
-            return  node.id.lower()
+            if "bool" not in self.imported_modules:
+                self.imported_modules.append("bool")
+                self.write_import('var bool = $loader.loadmodule("bool",$loader);')
+            if node.id == "True":
+                return "functions.bool(1)"
+            else:
+                return "functions.bool(0)"
 
         if node.id in self.BUILTIN_FUNCTIONS.keys():
             if "functions" not in self.imported_modules:

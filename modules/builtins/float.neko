@@ -1,207 +1,301 @@
 var functions	= $loader.loadmodule("functions",$loader);
 var bool		= $loader.loadmodule("bool",$loader);
 
-var int = $new(null);
+var float = $new(null);
 
-int.imag = 0;
-int.real = 0;
-
-$exports.__abs__ = function()
+var float_create = function()
 {
-	return functions.abs(this.numerator)
+    var o = $new(null);
+    
+    o.imag = 0;
+    o.real = 0;
+    o.type = 13;
+    
+    $objsetproto(o, float);
+    
+    return o;
 }
 
-$exports.__add__ = function(y)
+float.__abs__ = function()
 {
-	return this.numerator + y;
+	o = float_create();
+
+    o.real = this.real;
+
+    if (this.real < 0)
+    {
+        o.real = 0 - this.real;
+        return o;
+    }
+
+    return o;
 }
 
-$exports.__bool__ = function()
+float.__add__ = function(y)
 {
-	retutn (this.numerator != 0);
+	var o = float_create();
+
+    o.real = this.real + y.real;
+
+    return o;
 }
 
-$exports.__divmod__ = function(y)
+float.__bool__ = function()
 {
-	return functions.divmod(this.numerator, y);
+	var o = bool.__new__(0);
+	
+	if (this.real != 0 )
+	{
+		o.numerator = 1;
+	}
+	else
+	{
+		o.numerator = 0;
+	}
+	
+	retutn o;
 }
 
-$exports.__eq__ = function(y)
+float.__divmod__ = function(y)
 {
-	return (this.numerator == y);
+	// TODO
 }
 
-$exports.__float__ = function()
+float.__eq__ = function(y)
 {
-	return functions.float(this.numerator);
+	return this.real == y.real;
 }
 
-$exports.__floordiv__ = function(y)
+float.__float__ = function(obj)
 {
-	return ((this.numerator / y) - ((this.numerator / y) % 1));
+	// TODO
 }
 
-$exports.__format__ = function()
+float.__floordiv__ = function(y)
 {
-	//TODO
+	var o = float_create();
+
+    o.real = (this.real / y.real) - ((this.real / y.real) % 1);
+
+    return o;
 }
 
-$exports.__ge__ = function(y)
-{
-	return (this.numerator >= y);
-}
-
-$exports.__getattribute__ = function()
-{
-	//TODO
-}
-
-$exports.__getnewargs__ = function()
-{
-	//TODO
-}
-
-$exports.__gt__ = function(y)
-{
-	return (this.numerator > y);
-}
-
-$exports.__hash__ = function()
-{
-	return functions.hash(this.numerator);
-}
-
-$exports.__int__ = function()
-{
-	return functions.int(this.numerator);
-}
-
-$exports.__le__ = function(y)
-{
-	return (this.numerator <= y);
-}
-
-$exports.__lt__ = function(y)
-{
-	return (this.numerator < y);
-}
-
-$exports.__mod__ = function(y)
-{
-	return this.numerator % y;
-}
-
-$exports.__mul__ = function(y)
-{
-	return this.numerator * y;
-}
-
-$exports.__ne__ = function(y)
-{
-	return (this.numerator != y);
-}
-
-$exports.__neg__ = function()
-{
-	return 0 - this.numerator;
-}
-
-$exports.__pos__ = function()
-{
-	return 0 + this.numerator;
-}
-
-$exports.__pow__ = function(y)
-{
-	return functions.pow(this.numerator, y);
-}
-
-$exports.__radd__ = function(y)
-{
-	return y + this.numerator;
-}
-
-$exports.__rdivmod__ = function(y)
-{
-	return functions.divmod(y, this.numerator);
-}
-
-$exports.__repr__ = function()
+float.__format__ = function()
 {
 	//TODO
 }
 
-$exports.__rfloordiv__ = function(y)
+float.__ge__ = function(y)
 {
-	return ((y / this.numerator) - ((y / this.numerator) % 1));
+	return (this.real >= y.real);
 }
 
-$exports.__rmod__ = function(y)
-{
-	return (y % x);
-}
-
-$exports.__rmul__ = function(y)
-{
-	return (y * x);
-}
-
-$exports.__round__ = function()
-{
-	return this.numerator;
-}
-
-$exports.__rpow__ = function(y)
-{
-	return functions.pow(this.numerator, y);
-}
-
-$exports.__rsub__ = function(y)
-{
-	return y - x;
-}
-
-$exports.__rtruediv__ = function(y)
-{
-	return y / x;
-}
-
-$exports.__str__ = function(y)
-{
-	return functions.str(this.numerator);
-}
-
-$exports.__sub__ = function(y)
-{
-	return x - y;
-}
-
-$exports.__truediv__ = function(y)
-{
-	return x / y;
-}
-
-$exports.__trunc__ = function()
-{
-	return this.numerator;
-}
-
-$exports.as_integer_ratio = function()
+float.__getattribute__ = function()
 {
 	//TODO
 }
 
-$exports.conjugate = function()
+float.__getnewargs__ = function()
 {
 	//TODO
 }
 
-$exports.hex = function()
+float.__gt__ = function(y)
+{
+	return this.real > y.real;
+}
+
+float.__hash__ = function()
+{
+	// TODO
+}
+
+float.__int__ = function()
+{
+	return functions.int(this.real);
+}
+
+float.__le__ = function(y)
+{
+	return this.real <= y.real;
+}
+
+float.__lt__ = function(y)
+{
+	return this.real < y.real;
+}
+
+float.__mod__ = function(y)
+{
+	o = float_create();
+    
+    o.real = this.real % y.real;
+
+    return o;
+}
+
+float.__mul__ = function(y)
+{
+	o = float_create();
+    
+    o.real = this.real * y.real;
+
+    return o;
+}
+
+float.__ne__ = function(y)
+{
+	return this.numerator != y.real;
+}
+
+float.__neg__ = function()
+{
+	o = float_create();
+    
+    o.real = 0 - this.real;
+
+    return o;
+}
+
+float.__pos__ = function()
+{
+	o = float_create();
+    
+    o.real = 0 + this.real;
+
+    return o;
+}
+
+float.__pow__ = function(y)
+{
+	i = float_create();
+	i.real = 0;
+	
+    var result = this.real;
+
+    while (i.real < y.real - 1)
+    {
+        result = result * this.real;
+        i.real = i.real + 1;
+    }
+    
+    return i;
+}
+
+float.__radd__ = function(y)
+{
+	o = float_create();
+    
+    o.real = y.real + this.real;
+
+    return o;
+}
+
+float.__rdivmod__ = function(y)
+{
+	// TODO
+}
+
+float.__repr__ = function()
 {
 	//TODO
 }
 
-$exports.is_integer = function()
+float.__rfloordiv__ = function(y)
+{
+	// TODO
+}
+
+float.__rmod__ = function(y)
+{
+	o = float_create();
+    
+    o.real = y.real % this.real;
+
+    return o;
+}
+
+float.__rmul__ = function(y)
+{
+	o = float_create();
+    
+    o.real = y.real * this.real;
+
+    return o;
+}
+
+float.__round__ = function()
+{
+	// TODO
+}
+
+float.__rpow__ = function(y)
+{
+	// TODO
+}
+
+float.__rsub__ = function(y)
+{
+	o = float_create();
+    
+    o.real = y.real - this.real;
+
+    return o;
+}
+
+float.__rtruediv__ = function(y)
+{
+	o = float_create();
+    
+    o.real = y.real / this.real;
+
+    return o;
+}
+
+float.__str__ = function(y)
+{
+	return functions.str(this.real);
+}
+
+float.__sub__ = function(y)
+{
+	o = float_create();
+    
+    o.real =  this.real - y.real;
+
+    return o;
+}
+
+float.__truediv__ = function(y)
+{
+	o = float_create();
+    
+    o.real =  this.real / y.real;
+
+    return o;
+}
+
+float.__trunc__ = function()
+{
+	// TODO
+}
+
+float.as_integer_ratio = function()
+{
+	//TODO
+}
+
+float.conjugate = function()
+{
+	//TODO
+}
+
+float.hex = function()
+{
+	//TODO
+}
+
+float.is_integer = function()
 {
 	//TODO
 }
@@ -209,7 +303,10 @@ $exports.is_integer = function()
 
 // Data and other attributes defined here
 
-$exports.fromhex = function()
+float.fromhex = function()
 {
 	//TODO
 }
+
+
+$exports.float = float;

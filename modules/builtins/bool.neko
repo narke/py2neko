@@ -1,65 +1,68 @@
 var int = $loader.loadmodule("int",$loader);
 
 var bool = $new(null);
-bool.x = 0;
 
 $objsetproto(bool,int);
 
-$exports.bool = function(x)
+var bool_create = function(n)
 {
-	this.x = x;
-	
-	if (this.x != 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    var o = $new(null);
+
+	o.numerator = n;
+    o.type = 12;
+    
+    $objsetproto(o, bool);
+    
+    return o;
 }
 
-$exports.__and__ = function(y)
+bool.__new__ = function(n)
+{
+	return bool_create(n);
+}
+
+bool.__and__ = function(y)
 {
 	return this.x & y;
 }
 
-$exports.__or__ = function(y)
+bool.__or__ = function(y)
 {
 	return this.x | y;
 }
 
-$exports.__rand__ = function(y)
+bool.__rand__ = function(y)
 {
 	return y & this.x;
 }
 
-$exports.__repr__ = function(y)
+bool.__repr__ = function(y)
 {
 	;	// TODO
 }
 
-$exports.__ror__ = function(y)
+bool.__ror__ = function(y)
 {
 	return y | this.x;
 }
 
-$exports.__rxor__ = function(y)
+bool.__rxor__ = function(y)
 {
 	return y ^ this.x;
 }
 
-$exports.__str__ = function(y)
+bool.__str__ = function(y)
 {
 	;	// TODO
 }
 
-$exports.__xor__ = function()
+bool.__xor__ = function()
 {
 	return this.x ^ y;
 }
 
 // Built-in constants
-$exports.False = false;
-$exports.True = true;
+bool.False = bool_create(0);
+bool.True  = bool_create(1);
 
+$exports.bool = bool;
