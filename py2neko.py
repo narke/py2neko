@@ -16,15 +16,12 @@ import sys
 
 class Py2Neko(ast.NodeVisitor):
 
+    # Eq, NotEq, In and NotIn are in visit_Compare()
     COMPARISON_SYMBOLS = {
         Lt    : "__lt__",
         Gt    : "__gt__",
-        Eq    : "__eq__",
         LtE   : "__le__",
         GtE   : "__ge__",
-        NotEq : "__ne__",
-        NotIn : "NOT_IMPLEMENTED",
-        In    : "NOT_IMPLEMENTED",
         Is    : "NOT_IMPLEMENTED",
         IsNot : "NOT_IMPLEMENTED"}
 
@@ -330,7 +327,7 @@ class Py2Neko(ast.NodeVisitor):
             elif node.kwargs:
                 pass
 
-            function_args = ",".join([ str(self.visit(arg)) for arg in node.args ])
+            function_args = ",".join([str(self.visit(arg)) for arg in node.args])
             return "%s(%s)" % (function_name, function_args)
 
 
@@ -362,8 +359,29 @@ class Py2Neko(ast.NodeVisitor):
 
 
     def visit_Compare(self, node):
-        for op, right in zip(node.ops, node.comparators):
-            self.write_code("%s.%s(%s)" % (self.visit(node.left), self.COMPARISON_SYMBOLS[type(op)], self.visit(right)))
+        if isinstance(node.ops[0], ast.In):
+            self.write_code("%s.__contains__(%s)" %
+                (self.visit(node.comparators[0]),
+                self.visit(node.left)))
+        elif isinstance(node.ops[0], ast.NotIn):
+            self.write_code("!(%s.__contains__(%s))" %
+                (self.visit(node.comparators[0]),
+                self.visit(node.left)))
+        elif isinstance(node.ops[0], ast.Eq):
+            self.write_code("%s.__eq__(%s)" %
+                (self.visit(node.left),
+                self.visit(node.comparators[0])))
+        elif isinstance(node.ops[0], ast.NotEq):
+            self.write_code("!(%s.__eq__(%s))" %
+            (self.visit(node.left),
+            self.visit(node.comparators[0])))
+        else:
+            # Here are: ast.Lt, ast.Gt, ast.LtE, ast.GtE
+            for op, right in zip(node.ops, node.comparators):
+                self.write_code("%s.%s(%s)" % (self.visit(node.left),
+                    self.COMPARISON_SYMBOLS[type(op)],
+                    self.visit(right)))
+
 
     def visit_BoolOp(self, node):
         for i, value in enumerate(node.values):
@@ -413,8 +431,8 @@ class Py2Neko(ast.NodeVisitor):
         self.write_code("continue")
 
     def visit_Delete(self, node):
-        # Neko seems to not have an equivalent
-        pass
+        self.write_code("%s.__delitem__(%s);" % (node.targets[0].value.id, node.targets[0].slice.value.n))
+        #ast.NodeVisitor.generic_visit(self, node)
 
     def visit_Tuple(self, node):
         print("Tuple :")
@@ -430,6 +448,7 @@ class Py2Neko(ast.NodeVisitor):
                 ast.NodeVisitor.visit(self, item)
             self.write_code(")\n")
 
+
     def visit_Dict(self, node):
         self.write_code("%s" % "xxxdico")
         for (key, value) in zip(node.keys, node.values):
@@ -441,10 +460,16 @@ class Py2Neko(ast.NodeVisitor):
 
 
     def visit_Subscript(self, node):
-        self.visit(node.value)
-        self.write_code('%s.__getitem__(' % self.current_object_name)
-        self.visit(node.slice)
-        self.write_code(')')
+        print("Subscript: ")
+        self.write_code("%s.__getitem__(%s));" % (self.visit(node.value), self.visit(node.slice)))
+
+
+    def visit_Slice(self, node):
+        print("Slice: ", dir(node))
+
+
+    def visit_Index(self, node):
+        return self.visit(node.value)
 
 
 
@@ -462,7 +487,7 @@ def code2file(modules, code):
         f.write(module + "\n")
 
     for elem in code:
-        if elem in (')','}') or elem[len(elem)-1] == ';':
+        if elem in (')', '{', '}') or elem[len(elem)-1] == ';':
             f.write(elem + "\n")
         else:
             f.write(str(elem) + " ")

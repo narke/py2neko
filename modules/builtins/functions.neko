@@ -1,7 +1,7 @@
 var type_list  = $loader.loadmodule("list",$loader);
 var type_int   = $loader.loadmodule("int",$loader);
 var type_bool  = $loader.loadmodule("bool",$loader);
-var type_float  = $loader.loadmodule("float",$loader);
+var type_float = $loader.loadmodule("float",$loader);
 
 var abs = function(n)
 {
@@ -55,16 +55,14 @@ var any = function(iterable)
 
 var bool = function(n)
 {
-    $print(n+"\n");
     var o = $new(null);
 
     o.numerator = n;
     o.type = 12;
-    
+
     $objsetproto(o, type_bool.bool);
-    
+
     return o;
-    //type_bool.__new__(n);
 }
 
 
@@ -114,7 +112,7 @@ var int = function(n)
     o.type        = 11;
 
     $objsetproto(o, type_int.int);
-    
+
     return o;
 }
 
@@ -131,13 +129,13 @@ var iter = function(iterable)
 var float = function(n)
 {
     var o = $new(null);
-    
+
     o.imag        = 0;
     o.real        = n;
     o.type        = 13;
 
     $objsetproto(o, type_float.float);
-    
+
     return o;
 }
 
@@ -146,20 +144,26 @@ var len = function(object)
     return object.__len__();
 }
 
-var list = function(iterable)
+var list = $varargs(function(iterable)
 {
-    if ($typeof(iterable) == $tarray)
+    // TODO: check if it's argument is list, tuple or dict
+
+    var o = $new(null);
+
+    if ($asize(iterable) > 0 && $typeof(iterable) == $tarray)
     {
-        var o = $new(null);
-
-        // This is a tuple disguised as a list
-        o.contents = iterable;
-        o.type = 10;
-
-        $objsetproto(o, type_list.list);
-        return o;
+        o.contents = iterable[0];
     }
-}
+    else
+    {
+        o.contents = $amake(0);
+    }
+
+    o.type = 10;
+
+    $objsetproto(o, type_list.list);
+    return o;
+});
 
 
 var max = function(a, b)
@@ -190,7 +194,7 @@ var min = function(a, b)
 
 var pow = function(x, y, z)
 {
-	x.__pow__(y);
+    x.__pow__(y);
 }
 
 
@@ -198,21 +202,34 @@ var print = $varargs(function(args)
 {
     var nb_args = $asize(args);
     var i = 0;
-	
+
     while ( i < nb_args )
     {
-	if ( args[i].type == 11 || args[i].type == 12 )
-	{
-	    $print(args[i].numerator);
-	}
-	else if ( args[i].type == 13 )
-	{
-	    $print(args[i].real);
-	}
-		
-	i = i + 1;
+    
+        if ( $typeof(args[i]) == $tbool )
+        {
+	    if (args[i] == true)
+		$print("True");
+	    else
+		$print("False");
+    	}
+    
+    	else if ( args[i].type == 11 || args[i].type == 12 )
+        {
+            $print(args[i].numerator);
+    	}
+        else if ( args[i].type == 13 )
+    	{
+            $print(args[i].real);
+    	}
+    	else if ( args[i].type == 10 )
+    	{
+            $print(args[i].contents);
+    	}
+
+    	i = i + 1;
     }
-	
+
     $print("\n");
 });
 

@@ -1,6 +1,138 @@
 var list = $new(null);
 
-list.contents = $amake(0);
+var list_create = function()
+{
+    var o = $new(null);
+
+    o.contents = $amake(0);
+    o.type = 10;
+
+    $objsetproto(o, list);
+
+    return o;
+}
+
+list.__add__ = function(param_list)
+{
+    o = list_create();
+
+    o.contents = $aconcat($array(this.contents, param_list.contents));
+    
+    return o;
+}
+
+
+list.__contains__ = function(item)
+{
+    var size = $asize(this.contents);
+    var i = 0;
+    
+    while ( i < size )
+    {
+	if ( item.type == 11 || item.type == 12 )
+	{
+	    if ( this.contents[i].numerator == item.numerator )
+	    {
+		return true;
+	    }
+        }
+
+        i = i + 1;
+    }
+
+    return false;
+}
+
+
+list.__delitem__ = function(index)
+{
+    var array_size = $asize(this.contents);
+    var i = 0;
+    var j = 0;
+
+    var tmp_array = $amake($asize(this.contents) - 1);
+
+    while ( i < array_size )
+    {
+        if ( i != index )
+        {
+            tmp_array[j] = this.contents[i];
+            j = j + 1;
+        }
+
+        i = i + 1;
+    }
+    
+    this.contents = tmp_array;
+}
+
+
+list.__eq__ = function(param_list)
+{
+    var first_array_size = $asize(this.contents);
+    var second_array_size = $asize(param_list.contents);
+
+    var i = 0;
+
+    if ( first_array_size != second_array_size )
+    {
+        return false;
+    }
+	
+    while ( i < first_array_size )
+    {
+        if ( $hash($string(this.contents[i])) !=  $hash($string(param_list.contents[i])))
+        {
+            return false;
+        }
+
+        i = i + 1;
+    }
+
+    return true;
+}
+
+
+list.__ge__ = function()
+{
+    // TODO
+}
+
+
+list.__getattribute__ = function()
+{
+    // TODO
+}
+
+
+list.__getitem__ = function(index)
+{
+    return this.contents[index.numerator];
+}
+
+
+list.__gt__ = function()
+{
+    // TODO
+}
+
+
+list.__iadd__ = function()
+{
+    // TODO
+}
+
+
+list.__imul__ = function()
+{
+    // TODO
+}
+
+
+list.__init__ = function()
+{
+    // TODO
+}
 
 
 list.__iter__ = function()
@@ -27,12 +159,88 @@ list.__iter__ = function()
     return iterator;
 }
 
+
+list.__le__ = function()
+{
+    // TODO
+}
+
+
 list.__len__ = function()
 {
     return $asize(this.contents);
 }
 
-list.append = function(elem)
+
+list.__lt__ = function()
+{
+    // TODO
+}
+
+
+list.__mul__ = function()
+{
+    // TODO
+}
+
+
+list.__ne__ = function(param_list)
+{
+    var first_array_size = $asize(this.contents);
+    var second_array_size = $asize(param_list.contents);
+
+    var i = 0;
+
+    if ( first_array_size != second_array_size )
+    {
+        return true;
+    }
+
+    while ( i < first_array_size )
+    {
+        if ( this.contents[i] !=  param_list[i])
+        {
+            return true;
+        }
+
+        i = i + 1;
+    }
+
+    return false;
+}
+
+
+list.__repr__ = function()
+{
+    // TODO
+}
+
+
+list.__reversed__ = function()
+{
+    // TODO
+}
+
+
+list.__rmul__ = function()
+{
+    // TODO
+}
+
+
+list.__setitem__ = function(index, value)
+{
+    this.contents[index] = value;
+}
+
+
+list.__sizeof__ = function()
+{
+    // TODO
+}
+
+
+list.append = function(item)
 {
     var copy_list = $amake(0);
     var i = 0;
@@ -45,20 +253,20 @@ list.append = function(elem)
         i = i + 1;
     }
 
-    copy_list[i] = elem;
+    copy_list[i] = item;
 
     this.contents = $acopy(copy_list);
 }
 
 
-list.count = function(elem)
+list.count = function(item)
 {
     var i = 0;
     var total = 0;
 
     while (i < $asize(this.contents))
     {
-        if (this.contents[i] == elem)
+        if (this.contents[i] == item)
         {
             total = total + 1;
         }
@@ -75,13 +283,13 @@ list.extend = function()
     //TODO
 }
 
-list.index = function(x)
+list.index = function(item)
 {
     var i = 0;
 
     while (i < $asize(this.contents))
     {
-        if (this.contents[i] == x)
+        if (this.contents[i] == item)
         {
             return i;
         }
@@ -93,7 +301,7 @@ list.index = function(x)
 }
 
 
-list.insert = function(i, x)
+list.insert = function(i, item)
 {
     var index = 0;
 
@@ -106,7 +314,7 @@ list.insert = function(i, x)
     {
         if (i == index)
         {
-            this.contents[i] = x;
+            this.contents[i] = item;
         }
 
         index = index + 1;
@@ -131,7 +339,7 @@ list.pop = function()
 }
 
 
-list.remove = function(x)
+list.remove = function(item)
 {
     var tmp_list = $amake($asize(this.contents)-1);
 
@@ -140,7 +348,7 @@ list.remove = function(x)
 
     while (i <= $asize(this.contents))
     {
-        if (this.contents[i] != x)
+        if (this.contents[i] != item)
         {
             tmp_list[j] = this.contents[i];
             j = j + 1;
