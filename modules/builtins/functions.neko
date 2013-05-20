@@ -2,6 +2,8 @@ var type_list  = $loader.loadmodule("list",$loader);
 var type_int   = $loader.loadmodule("int",$loader);
 var type_bool  = $loader.loadmodule("bool",$loader);
 var type_float = $loader.loadmodule("float",$loader);
+var type_tuple = $loader.loadmodule("tuple",$loader);
+var type_str   = $loader.loadmodule("str",$loader);
 
 var abs = function(n)
 {
@@ -222,7 +224,11 @@ var print = $varargs(function(args)
     	{
             $print(args[i].real);
     	}
-    	else if ( args[i].type == 10 )
+    	else if ( args[i].type == 10 || args[i].type == 14 )
+    	{
+            $print(args[i].contents);
+    	}
+    	else if ( args[i].type == 15 )
     	{
             $print(args[i].contents);
     	}
@@ -290,6 +296,20 @@ var reversed = function(iterable)
 }
 
 
+var str = function(s)
+{
+    var o = $new(null);
+
+    o.contents = $smake($ssize(s));
+    o.contents = s;
+    o.type = 15;
+
+    $objsetproto(o, type_str.str);
+
+    return o;
+}
+
+
 var sum = function(list)
 {
     var length = $asize(list);
@@ -323,4 +343,5 @@ $exports.pow        = pow;
 $exports.print      = print;
 $exports.range      = range;
 $exports.reversed	= reversed;
+$exports.str        = str;
 $exports.sum        = sum;

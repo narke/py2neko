@@ -1,0 +1,27 @@
+var str = $new(null);
+
+var str_create = function()
+{
+    var o = $new(null);
+
+    o.contents = $smake(0);
+    o.type = 15;
+
+    $objsetproto(o, str);
+
+    return o;
+}
+
+
+str.__add__ = function(s)
+{
+    o = str_create();
+	
+    o.contents = $smake($ssize(this.contents) + $ssize(s.contents));
+    o.contents = this.contents + s.contents;
+	
+    return o;
+}
+
+
+$exports.str = str;

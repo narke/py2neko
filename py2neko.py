@@ -91,10 +91,10 @@ class Py2Neko(ast.NodeVisitor):
         "slice"       : "NOT_IMPLEMENTED",
         "sorted"      : "NOT_IMPLEMENTED",
         "staticmethod": "NOT_IMPLEMENTED",
-        "str"         : "NOT_IMPLEMENTED",
+        "str"         : "str",
         "sum"         : "sum",
         "super"       : "NOT_IMPLEMENTED",
-        "tuple"       : "NOT_IMPLEMENTED",
+        "tuple"       : "tuple",
         "type"        : "NOT_IMPLEMENTED",
         "vars"        : "NOT_IMPLEMENTED",
         "zip"         : "NOT_IMPLEMENTED",
@@ -168,8 +168,11 @@ class Py2Neko(ast.NodeVisitor):
 
     def visit_Str(self, node):
         print("Str :", node.s)
+        if "str" not in self.imported_modules:
+                self.imported_modules.append("str")
+                self.write_import('var str = $loader.loadmodule("str",$loader);')
 
-        return '"' + node.s + '"'
+        return 'functions.str("%s")' % node.s;
 
     def visit_Assign(self, node):
         value = self.visit(node.value)
@@ -184,7 +187,9 @@ class Py2Neko(ast.NodeVisitor):
                     self.imported_modules.append("list")
                     self.write_import('var list = $loader.loadmodule("list",$loader);')
             elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Tuple):
-                pass
+                if "tuple" not in self.imported_modules:
+                    self.imported_modules.append("list")
+                    self.write_import('var tuple = $loader.loadmodule("tuple",$loader);')
 
             # TODO: make it context dependent
             if identifier not in self.delcared_identifiers:
