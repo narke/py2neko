@@ -284,6 +284,12 @@ var range = function(start, stop, step)
 }
 
 
+var reversed = function(iterable)
+{
+	return iterable.__reversed__();
+}
+
+
 var sum = function(list)
 {
     var length = $asize(list);
@@ -316,4 +322,5 @@ $exports.min        = min;
 $exports.pow        = pow;
 $exports.print      = print;
 $exports.range      = range;
+$exports.reversed	= reversed;
 $exports.sum        = sum;

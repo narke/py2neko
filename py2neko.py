@@ -84,7 +84,7 @@ class Py2Neko(ast.NodeVisitor):
         "property"    : "NOT_IMPLEMENTED",
         "range"       : "range",
         "repr"        : "NOT_IMPLEMENTED",
-        "reversed"    : "NOT_IMPLEMENTED",
+        "reversed"    : "reversed",
         "round"       : "NOT_IMPLEMENTED",
         "set"         : "NOT_IMPLEMENTED",
         "setattr"     : "NOT_IMPLEMENTED",
@@ -103,7 +103,7 @@ class Py2Neko(ast.NodeVisitor):
     BINARY_OP = {
         'Add'      : '__add__',
         'Sub'      : '__sub__',
-        'Mult'     : '__mult__',
+        'Mult'     : '__mul__',
         'Div'      : '__div__',
         'FloorDiv' : '__floordiv__',
         'Mod'      : '__mod__',
@@ -461,7 +461,7 @@ class Py2Neko(ast.NodeVisitor):
 
     def visit_Subscript(self, node):
         print("Subscript: ")
-        self.write_code("%s.__getitem__(%s));" % (self.visit(node.value), self.visit(node.slice)))
+        self.write_code("%s.__getitem__(%s);" % (self.visit(node.value), self.visit(node.slice)))
 
 
     def visit_Slice(self, node):
