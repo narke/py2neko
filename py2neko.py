@@ -84,7 +84,7 @@ class Py2Neko(ast.NodeVisitor):
         "property"    : "NOT_IMPLEMENTED",
         "range"       : "range",
         "repr"        : "NOT_IMPLEMENTED",
-        "reversed"    : "reversed",
+        "reversed"    : "reserved",
         "round"       : "NOT_IMPLEMENTED",
         "set"         : "NOT_IMPLEMENTED",
         "setattr"     : "NOT_IMPLEMENTED",
