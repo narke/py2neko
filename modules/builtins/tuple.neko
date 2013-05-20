@@ -1,44 +1,44 @@
+var functions   = $loader.loadmodule("functions",$loader);
+
 var tuple = $new(null);
-tuple.contents = $amake(0);
 
-
-$exports.__add__ = function(y)
+var tuple_create = function()
 {
-    var x_size = $asize(this.contents);
-    var y_size = $asize(y);
+    var o = $new(null);
 
-    var tuple_size = x_size + y_size;
-    var i = 0;
+    o.contents = $amake(0);
+    o.type = 14;
 
-    tmp_tuple = $amake(tuple_size);
+    $objsetproto(o, tuple);
 
-    while ( i < tuple_size)
-    {
-        if (i < x_size)
-        {
-            tmp_tuple[i] = this.contents[i];
-        }
-        else
-        {
-            tmp_tuple[i] = y[i];
-        }
-        i = i + 1;
-    }
-
-    this.contents = tmp_tuple;
+    return o;
 }
 
-$exports.__contains__ = function(y)
+tuple.__add__ = function(param_tuple)
 {
-    var x_size = $asize(this.contents);
-    var i = 0;
+    o = tuple_create();
 
-    while (i < x_size)
+    o.contents = $aconcat($array(this.contents, param_tuple.contents));
+    
+    return o;
+}
+
+
+tuple.__contains__ = function(item)
+{
+    var size = $asize(this.contents);
+    var i = 0;
+    
+    while ( i < size )
     {
-        if (this.contents[i] == y)
-        {
-            return true;
+	if ( item.type == 11 || item.type == 12 )
+	{
+	    if ( this.contents[i].numerator == item.numerator )
+	    {
+		return true;
+	    }
         }
+
         i = i + 1;
     }
 
@@ -46,128 +46,298 @@ $exports.__contains__ = function(y)
 }
 
 
-$exports.__eq__ = function(y)
+tuple.__eq__ = function(param_tuple)
 {
-    var x_size = $asize(this.contents);
-    var y_size = $asize(y);
+    var first_array_size = $asize(this.contents);
+    var second_array_size = $asize(param_tuple.contents);
+
     var i = 0;
 
-    // tuples of different size aren't equal
-    if (x_size != y_size)
+    if ( first_array_size != second_array_size )
     {
         return false;
     }
-
-    // They have the same length, check their content
-    while (i < x_size)
+	
+    while ( i < first_array_size )
     {
-        if (this.contents[i] != y[i])
+        if ( $hash($string(this.contents[i])) !=  $hash($string(param_tuple.contents[i])) )
         {
             return false;
         }
+
         i = i + 1;
     }
 
     return true;
 }
 
-$exports.__ge__ = function()
+
+tuple.__ge__ = function(param_tuple)
 {
-	// TODO
+    var array_size = $asize(this.contents);
+    var i = 0;
+    
+    while ( i < first_array_size )
+    {
+        if ( this.contents[i] >= param_tuple.contents[i] )
+        {
+            return true;
+        }
+
+        i = i + 1;
+    }
+
+    return false;
 }
 
 
-$exports.__getitem__ = function(y)
+tuple.__getattribute__ = function()
 {
-    return this.contents[y];
+    // TODO
 }
 
 
-$exports.__gt__ = function()
+tuple.__getitem__ = function(index)
 {
-	// TODO
+    return this.contents[index.numerator];
 }
 
 
-$exports.__iter__ = function()
+tuple.__getnewargs__ = function()
+{
+    // TODO
+}
+
+tuple.__gt__ = function(param_tuple)
+{
+	var array_size = $asize(this.contents);
+    var i = 0;
+    
+    while ( i < first_array_size )
+    {
+        if ( this.contents[i] > param_tuple.contents[i] )
+        {
+            return true;
+        }
+
+        i = i + 1;
+    }
+
+    return false;
+}
+
+tuple.__hash__ = function()
+{
+    // TODO
+}
+
+
+tuple.__iter__ = function()
 {
     var i = -1;
 
     var iterator = $new(null);
-    $objsetproto(iterator, tuple);
+    iterator.contents = this.contents;
 
     iterator.__next__ = function()
     {
         i = i + 1;
-        return this.contents[i];
+
+        if (i >= $asize(this.contents))
+        {
+            ; // exception
+        }
+        else
+        {
+            return this.contents[i];
+        }
     }
 
     return iterator;
 }
 
 
-$exports.__le__ = function()
+tuple.__le__ = function()
 {
-	// TODO
-}
-
-
-$exports.__len__ = function()
-{
-    return $asize(this.contents);
-}
-
-
-$exports.__lt__ = function()
-{
-	// TODO
-}
-
-
-$exports.__mul__ = function()
-{
-	// TODO
-}
-
-
-$exports.__ne__ = function()
-{
-	// TODO
-}
-
-
-$exports.count = function(y)
-{
-    var x_size = $asize(this.contents);
+    var array_size = $asize(this.contents);
     var i = 0;
-    var occurences = 0;
-
-    while (i < x_size)
+    
+    while ( i < first_array_size )
     {
-        if (this.contents[i] == y)
+        if ( this.contents[i] <= param_tuple.contents[i] )
         {
-            occurences = occurences + 1;
+            return true;
         }
+
         i = i + 1;
     }
 
-    return occurences;
+    return false;
 }
 
 
-$exports.index = function(y)
+tuple.__len__ = function()
 {
-    var x_size = $asize(this.contents);
-    var i = 0;
+    o = functions.int(0);
+	
+    o.numerator =  $asize(this.contents);
+    
+    return o;
+}
 
-    while (i < x_size)
+
+tuple.__lt__ = function()
+{
+    var array_size = $asize(this.contents);
+    var i = 0;
+    
+    while ( i < first_array_size )
     {
-        if (this.contents[i] == y)
+        if ( this.contents[i] < param_tuple.contents[i] )
         {
-            return i;
+            return true;
         }
+
         i = i + 1;
     }
 
-    throw("ValueError: tuple.index(x): x not in tuple");
+    return false;
 }
+
+
+tuple.__mul__ = function(n)
+{
+    o = tuple_create();
+    var i = 0;
+    var j = 0;
+    
+    var array_size = $asize(this.contents);
+    var tmp_array = $amake($asize(this.contents) * n.numerator);
+    var level = 0;
+    
+    while ( i < n.numerator )
+    {
+	while ( j < array_size)
+	{
+	    tmp_array[level+j] = this.contents[j];
+	    j = j + 1;
+	}
+	level = level + array_size;
+	j = 0;
+		
+	i = i + 1;
+    }
+    
+    o.contents = tmp_array;
+    return o;
+}
+
+
+tuple.__ne__ = function(param_tuple)
+{
+    var first_array_size = $asize(this.contents);
+    var second_array_size = $asize(param_tuple.contents);
+
+    var i = 0;
+
+    if ( first_array_size != second_array_size )
+    {
+        return true;
+    }
+    
+    while ( i < first_array_size )
+    {
+        if ( this.contents[i] != param_tuple.contents[i] )
+        {
+            return true;
+        }
+
+        i = i + 1;
+    }
+
+    return false;
+}
+
+
+tuple.__repr__ = function()
+{
+    // TODO
+}
+
+
+tuple.__rmul__ = function(n)
+{
+    o = tuple_create();
+    var i = 0;
+    var j = 0;
+    
+    var array_size = $asize(this.contents);
+    var tmp_array = $amake($asize(this.contents) * n.numerator);
+    var level = 0;
+    
+    while ( i < n.numerator )
+    {
+	while ( j < array_size)
+	{
+	    tmp_array[level+j] = this.contents[j];
+	    j = j + 1;
+	}
+	level = level + array_size;
+	j = 0;
+		
+	i = i + 1;
+    }
+    
+    o.contents = tmp_array;
+    return o;
+}
+
+
+tuple.__sizeof__ = function()
+{
+    // TODO
+}
+
+
+tuple.count = function(item)
+{
+    var i = 0;
+    var total = 0;
+
+    while (i < $asize(this.contents))
+    {
+        if ($hash($string(this.contents[i])) ==  $hash($string(item)))
+        {
+            total = total + 1;
+        }
+
+        i = i + 1;
+    }
+
+    o = functions.int(0);
+    o.numerator = total;
+    return o;
+}
+
+
+tuple.index = function(item)
+{
+    var i = 0;
+
+    while (i < $asize(this.contents))
+    {
+        if ($hash($string(this.contents[i])) ==  $hash($string(item)))
+        {
+	    o = functions.int(0);
+	    o.numerator = i
+	    return o;
+        }
+
+        i = i + 1;
+    }
+
+    return null;
+}
+
+
+$exports.tuple = tuple;
