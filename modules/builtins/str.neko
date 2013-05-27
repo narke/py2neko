@@ -1,3 +1,5 @@
+var functions   = $loader.loadmodule("functions",$loader);
+
 var str = $new(null);
 
 var str_create = function()
@@ -21,6 +23,197 @@ str.__add__ = function(s)
     o.contents = this.contents + s.contents;
 	
     return o;
+}
+
+
+str.__contains__ = function(substring)
+{
+    var str_size = $ssize(this.contents);
+    var substr_size = $ssize(substring.contents);
+    var i = 0;
+
+    while (i + substr_size < str_size)
+    {
+	if (substring.contents == $ssub(this.contents, i, i + substr_size))
+	{
+	    return true;
+	}
+
+	i = i + 1;
+    }
+    
+    return false;
+}
+
+
+str.__eq__ = function(string)
+{
+    if (this.contents == string.contents)
+    {
+	return true;
+    }
+    else
+    {
+	return false;
+    }
+}
+
+
+str.__format__ = function()
+{
+    // TODO
+}
+
+
+str.__ge__ = function()
+{
+    // TODO
+}
+
+
+str.__getattribute__ = function()
+{
+    // TODO
+}
+
+
+str.__getitem__ = function(i)
+{
+   o = str_create();
+	
+    o.contents = $smake(1);
+    o.contents = $ssub(this.contents, i.numerator, i.numerator);
+    
+    return o;
+}
+
+
+str.__getnewargs__ = function()
+{
+    // TODO
+}
+
+
+str.__gt__ = function()
+{
+    // TODO
+}
+
+
+str.__hash__ = function()
+{
+    o = functions.int(0);
+	
+    o.numerator = $hash(this.contents);
+    
+    return o;
+}
+
+
+str.__iter__ = function()
+{
+    var i = -1;
+
+    var iterator = $new(null);
+    iterator.contents = this.contents;
+
+    iterator.__next__ = function()
+    {
+        i = i + 1;
+
+        if (i > $ssize(this.contents))
+        {
+            ; // exception
+        }
+        else
+        {
+	    o = str_create();
+			
+	    o.contents = $smake(1);
+	    o.contents = $ssub(this.contents, i, 1);
+			
+            return o;
+        }
+    }
+
+    return iterator;
+}
+
+
+str.__le__ = function()
+{
+    // TODO
+}
+
+
+str.__len__ = function()
+{
+    o = functions.int(0);
+	
+    o.numerator =  $ssize(this.contents);
+    
+    return o;
+}
+
+
+str.__lt__ = function()
+{
+    // TODO
+}
+
+
+str.__mod__ = function()
+{
+    // TODO
+}
+
+
+str.__mul__ = function()
+{
+    // TODO
+}
+
+
+str.__ne__ = function(string)
+{
+    if (this.contents != string.contents)
+    {
+	return true;
+    }
+    else
+    {
+	return false;
+    }
+}
+
+
+str.__repr__ = function()
+{
+    // TODO
+}
+
+
+str.__rmod__ = function()
+{
+    // TODO
+}
+
+
+str.__rmul__ = function()
+{
+    // TODO
+}
+
+
+str.__sizeof__ = function()
+{
+    // TODO
+}
+
+
+str.__str__ = function()
+{
+    // TODO
 }
 
 

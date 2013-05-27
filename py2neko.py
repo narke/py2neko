@@ -406,7 +406,7 @@ class Py2Neko(ast.NodeVisitor):
         self.write_code("var %s = functions.iter(%s);" % (iter_dummy, for_iter))
         self.write_code("var iter_len = functions.len(%s);" % for_iter)
         self.write_code("var __i__ = 0;")
-        self.write_code("\nwhile (__i__ < iter_len)")
+        self.write_code("\nwhile (__i__ < iter_len.numerator)")
         self.write_code("\n{\n")
         self.write_code("    var %s;" % for_target)
         self.write_code("    __i__ = __i__ + 1;")

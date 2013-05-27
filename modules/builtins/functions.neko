@@ -121,10 +121,7 @@ var int = function(n)
 
 var iter = function(iterable)
 {
-    if (iterable.type == 10)
-    {
-        return iterable.__iter__();
-    }
+    return iterable.__iter__();
 }
 
 
