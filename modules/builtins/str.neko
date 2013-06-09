@@ -216,5 +216,264 @@ str.__str__ = function()
     // TODO
 }
 
+// arg[0] = sub, arg[1] = start, arg[2] = end
+str.count = $varargs(function(args)
+{
+    var nb_args = $asize(args);
+    var i = 0;
+    
+    var nb_found = 0;
+    var str_size = $ssize(this.contents);
+    
+    if (nb_args == 1)
+    {
+	while (i < str_size)
+	{
+	    if ($ssub(this.contents, i, 1) == args[0].contents)
+	    {
+		nb_found = nb_found + 1;
+	    }
+	    i = i + 1;
+	}
+    }
+    else if (nb_args == 2)
+    {
+	while (i < str_size)
+	{
+	    if (i >= args[1])
+	    {
+		if ($ssub(this.contents, i, 1) == args[0].contents)
+		{
+		    nb_found = nb_found + 1;
+		}
+		i = i + 1;
+	    }
+	}
+    }
+    else if (nb_args == 3)
+    {
+	while (i < str_size)
+	{
+	    if (i >= args[1] && i <= args[2])
+	    {
+		if ($ssub(this.contents, i, 1) == args[0].contents)
+		{
+		    nb_found = nb_found + 1;
+		}
+		i = i + 1;
+	    }
+	}
+    }
+    
+    o = functions.int(0);
+	
+    o.numerator = nb_found;
+    
+    return o;
+});
+
+
+// arg[0] = sub, arg[1] = start, arg[2] = end
+str.find = $varargs(function(args)
+{
+    var nb_args = $asize(args);
+    var i = 0;
+    
+    var nb_found = 0;
+    var str_size = $ssize(this.contents);
+    
+    if (nb_args == 1)
+    {
+	while (i < str_size)
+	{
+	    if ($ssub(this.contents, i, 1) == args[0].contents)
+	    {
+		nb_found = nb_found + 1;
+	    }
+	    i = i + 1;
+	}
+    }
+    else if (nb_args == 2)
+    {
+	while (i < str_size)
+	{
+	    if (i >= args[1])
+	    {
+		if ($ssub(this.contents, i, 1) == args[0].contents)
+		{
+		    nb_found = nb_found + 1;
+		}
+		i = i + 1;
+	    }
+	}
+    }
+    else if (nb_args == 3)
+    {
+	while (i < str_size)
+	{
+	    if (i >= args[1] && i <= args[2])
+	    {
+		if ($ssub(this.contents, i, 1) == args[0].contents)
+		{
+		    nb_found = nb_found + 1;
+		}
+		i = i + 1;
+	    }
+	}
+    }
+    
+    o = functions.int(0);
+	
+    o.numerator = nb_found;
+    
+    return o;
+});
+
+
+str.join = function(sequence)
+{
+    var sequence_size = $asize(sequence.contents);
+
+    o = str_create();
+
+    o.contents = $smake(sequence_size);
+
+    var i = 0;
+
+    while (i < sequence_size)
+    {
+	o.contents = o.contents + sequence.contents[i].contents;
+		
+	i = i + 1;
+    }
+	
+    return o;
+}
+
+
+str.lower = function()
+{
+    var str_length = $ssize(this.contents);
+    o = str_create();
+    o.contents = $smake(str_length);
+
+    var i = 0;
+    var letter = $smake(1);
+
+    while (i < str_length)
+    {
+	if ($sget(this.contents, i) >= 65 && $sget(this.contents, i) <= 90)
+	{
+	    $sset(letter, 0, $sget(this.contents, i) + 32);
+	    o.contents = o.contents + letter;
+	}
+	else
+	{
+	    $sset(letter, 0, $sget(this.contents, i));
+	    o.contents = o.contents + letter;
+	}
+
+	i = i + 1;
+    }
+
+    return o;
+}
+
+
+str.split = function()
+{
+    var str_length = $ssize(this.contents);
+    var i = 0;
+    var substr_start_position;
+
+    l = functions.list();
+
+    substr_start_position = 0;
+
+    while (i < str_length)
+    {
+
+	// is it a space?
+	if ($sget(this.contents, i) == 32)
+	{
+	    var substr_length = i - substr_start_position;
+	    substr = str_create();
+	    
+	    substr.contents = $smake(substr_length);
+	    $sblit(substr.contents, 0, this.contents, substr_start_position, substr_length);
+
+	    l.append(substr);
+
+	    substr_start_position = i;
+	}
+
+	i = i + 1;
+
+    }
+
+    // Getting the last part if any
+    var substr_length = i - substr_start_position;
+    substr = str_create();
+    substr.contents = $smake(substr_length);
+    $sblit(substr.contents, 0, this.contents, substr_start_position, substr_length);
+
+    l.append(substr);
+
+    return l;
+}
+
+
+str.strip = function()
+{
+    var str_length = $ssize(this.contents);
+    o = str_create();
+    o.contents = $smake(str_length);
+
+    var i = 0;
+    var letter = $smake(1);
+
+    while (i < str_length)
+    {
+	if ($sget(this.contents, i) > 32 && $sget(this.contents, i) < 127)
+	{
+            $sset(letter, 0, $sget(this.contents, i));
+            o.contents = o.contents + letter;
+	}
+
+	i = i + 1;
+    }
+
+    return o;
+}
+
+
+str.upper = function()
+{
+    var str_length = $ssize(this.contents);
+    o = str_create();
+    o.contents = $smake(str_length);
+
+    var i = 0;
+    var letter = $smake(1);
+
+    while (i < str_length)
+    {
+	if ($sget(this.contents, i) >= 97 && $sget(this.contents, i) <= 122)
+	{
+	    $sset(letter, 0, $sget(this.contents, i) - 32);
+            o.contents = o.contents + letter;
+	}
+	else
+	{
+	    $sset(letter, 0, $sget(this.contents, i));
+	    o.contents = o.contents + letter;
+	}
+
+	i = i + 1;
+    }
+
+    return o;
+}
+
 
 $exports.str = str;

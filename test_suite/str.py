@@ -20,3 +20,24 @@ for i in "abc":
 
 # __ne__()
 "abc".__ne__("cba")
+
+# count()
+"abcdea".count("a")
+
+# find()
+"abc".find("b")
+
+# join()
+"".join(["a", "b", "c"])
+
+# lower()
+"ABC".lower()
+
+# split()
+"a b c".split()
+
+# strip()
+"abc  ".strip()
+
+# upper()
+"abc".upper()

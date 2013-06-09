@@ -227,7 +227,7 @@ var print = $varargs(function(args)
     	}
     	else if ( args[i].type == 15 )
     	{
-            $print(args[i].contents);
+			$print(args[i].contents);
     	}
 
     	i = i + 1;
