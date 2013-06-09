@@ -31,7 +31,7 @@ tuple.__contains__ = function(item)
     
     while ( i < size )
     {
-	if ( item.type == 11 || item.type == 12 )
+	if ( item.type == 14 )
 	{
 	    if ( this.contents[i].numerator == item.numerator )
 	    {
@@ -110,7 +110,7 @@ tuple.__getnewargs__ = function()
 
 tuple.__gt__ = function(param_tuple)
 {
-	var array_size = $asize(this.contents);
+    var array_size = $asize(this.contents);
     var i = 0;
     
     while ( i < first_array_size )

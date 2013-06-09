@@ -1,0 +1,16 @@
+Help on module tuple:
+
+NNAAMMEE
+    tuple - # append()
+
+FFIILLEE
+    /home/narke/projects/py2neko.git/test_suite/tuple.py
+
+DDAATTAA
+    aa = [1]
+    bb = <list_reverseiterator object>
+    ii = 1
+    ll = [21, 54, 87]
+    nnbb = 2
+    vvaalluuee = 3
+

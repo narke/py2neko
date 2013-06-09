@@ -145,8 +145,6 @@ var len = function(object)
 
 var list = $varargs(function(iterable)
 {
-    // TODO: check if it's argument is list, tuple or dict
-
     var o = $new(null);
 
     if ($asize(iterable) > 0 && $typeof(iterable) == $tarray)
@@ -322,6 +320,26 @@ var sum = function(list)
 }
 
 
+var tuple = $varargs(function(iterable)
+{
+    var o = $new(null);
+
+    if ($asize(iterable) > 0 && $typeof(iterable) == $tarray)
+    {
+        o.contents = iterable[0];
+    }
+    else
+    {
+        o.contents = $amake(0);
+    }
+
+    o.type = 14;
+
+    $objsetproto(o, type_tuple.tuple);
+    return o;
+});
+
+
 $exports.abs        = abs;
 $exports.all        = all;
 $exports.any        = any;
@@ -342,3 +360,4 @@ $exports.range      = range;
 $exports.reversed	= reversed;
 $exports.str        = str;
 $exports.sum        = sum;
+$exports.tuple      = tuple;

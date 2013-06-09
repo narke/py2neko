@@ -79,7 +79,7 @@ str.__getattribute__ = function()
 
 str.__getitem__ = function(i)
 {
-   o = str_create();
+    o = str_create();
 	
     o.contents = $smake(1);
     o.contents = $ssub(this.contents, i.numerator, i.numerator);

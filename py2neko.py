@@ -188,7 +188,7 @@ class Py2Neko(ast.NodeVisitor):
                     self.write_import('var list = $loader.loadmodule("list",$loader);')
             elif isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Tuple):
                 if "tuple" not in self.imported_modules:
-                    self.imported_modules.append("list")
+                    self.imported_modules.append("tuple")
                     self.write_import('var tuple = $loader.loadmodule("tuple",$loader);')
 
             # TODO: make it context dependent
@@ -443,15 +443,11 @@ class Py2Neko(ast.NodeVisitor):
         print("Tuple :")
         # Is the list empty?
         if len(node.elts) == 0:
-            self.write_code("$amake(0)\n")
+            return "functions.tuple()"
         # Does it contains items?
         else:
-            self.write_code("$array(")
-            for i, item in enumerate(node.elts):
-                if i:
-                    self.write_code(",")
-                ast.NodeVisitor.visit(self, item)
-            self.write_code(")\n")
+            tuple_items = ", ".join([self.visit(item) for item in node.elts])
+            return "functions.tuple($array( %s ))" % (tuple_items)
 
 
     def visit_Dict(self, node):
